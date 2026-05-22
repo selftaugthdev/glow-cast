@@ -1,0 +1,34 @@
+#!/usr/bin/env bash
+# Reads .env from the project root and writes GlowCast/Config/Secrets.swift.
+# Run once after cloning: ./scripts/generate_secrets.sh
+
+set -euo pipefail
+
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+ROOT="$SCRIPT_DIR/.."
+ENV_FILE="$ROOT/.env"
+OUT="$ROOT/GlowCast/Config/Secrets.swift"
+
+if [ ! -f "$ENV_FILE" ]; then
+  echo "ERROR: .env not found. Copy .env.example → .env and fill in your keys."
+  exit 1
+fi
+
+# Load .env (skip blank lines and comments)
+while IFS='=' read -r key value; do
+  [[ "$key" =~ ^#.*$ || -z "$key" ]] && continue
+  export "$key=$value"
+done < "$ENV_FILE"
+
+: "${ANTHROPIC_API_KEY:?ANTHROPIC_API_KEY is not set in .env}"
+
+mkdir -p "$(dirname "$OUT")"
+
+cat > "$OUT" << SWIFT
+// AUTO-GENERATED — do not edit. Run scripts/generate_secrets.sh to regenerate.
+enum Secrets {
+    static let anthropicAPIKey = "$ANTHROPIC_API_KEY"
+}
+SWIFT
+
+echo "Secrets.swift written to GlowCast/Config/"
