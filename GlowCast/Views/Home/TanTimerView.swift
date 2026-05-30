@@ -63,9 +63,19 @@ struct TanTimerView: View {
                             Text("remaining")
                                 .font(.system(size: 14))
                                 .foregroundColor(.white.opacity(0.5))
+                        } else if vm.currentUV < 1 {
+                            VStack(spacing: 6) {
+                                Text("No UV")
+                                    .font(.system(size: 48, weight: .black, design: .rounded))
+                                    .foregroundColor(.white.opacity(0.5))
+                                Text("Come back when the sun is out")
+                                    .font(.system(size: 13))
+                                    .foregroundColor(.white.opacity(0.35))
+                                    .multilineTextAlignment(.center)
+                            }
                         } else {
                             VStack(spacing: 6) {
-                                Text("\(vm.safeMinutes)")
+                                Text(verbatim: "\(vm.safeMinutes)")
                                     .font(.system(size: 64, weight: .black, design: .rounded))
                                     .foregroundColor(.white)
                                 Text("minutes")
@@ -111,7 +121,7 @@ struct TanTimerView: View {
                             )
                     }
                     .padding(.horizontal, 28)
-                } else {
+                } else if vm.currentUV >= 1 {
                     Button {
                         vm.startSession()
                     } label: {

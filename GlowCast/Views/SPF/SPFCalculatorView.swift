@@ -71,7 +71,7 @@ struct SPFCalculatorView: View {
                         Text("No SPF needed")
                             .font(.system(size: 26, weight: .black))
                             .foregroundColor(.uvLow)
-                        Text("UV is low — enjoy safely")
+                        Text("UV is low, enjoy safely")
                             .font(.system(size: 14))
                             .foregroundColor(.white.opacity(0.55))
                     } else {
