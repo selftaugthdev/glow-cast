@@ -189,6 +189,9 @@ struct TanningWindowCard: View {
     private func timeRange(_ start: Date, _ end: Date) -> String {
         let fmt = DateFormatter()
         fmt.dateFormat = "h a"
+        if Calendar.current.isDate(start, equalTo: end, toGranularity: .hour) {
+            return "Around \(fmt.string(from: start))"
+        }
         return "\(fmt.string(from: start)) – \(fmt.string(from: end))"
     }
 }
@@ -228,7 +231,7 @@ struct ConditionsRow: View {
 
     var body: some View {
         HStack(spacing: 0) {
-            ConditionItem(icon: "cloud.fill", label: "Clouds", value: "--")
+            ConditionItem(icon: "cloud.fill", label: "Clouds", value: "\(forecast.averageCloudCover)%")
             Divider().frame(height: 30).background(Color.white.opacity(0.15))
             ConditionItem(icon: "arrow.up.circle.fill", label: "Peak UV", value: String(format: "%.0f", forecast.maxUV))
             Divider().frame(height: 30).background(Color.white.opacity(0.15))

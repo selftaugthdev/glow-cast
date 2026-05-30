@@ -34,6 +34,12 @@ struct DailyForecast: Identifiable {
         return (first.time, last.time)
     }
 
+    var averageCloudCover: Int {
+        let daytime = hourly.filter { $0.hour >= 8 && $0.hour <= 20 }
+        guard !daytime.isEmpty else { return 0 }
+        return Int(daytime.map(\.cloudCover).reduce(0, +) / Double(daytime.count))
+    }
+
     var dayName: String {
         let formatter = DateFormatter()
         formatter.dateFormat = "EEE"
