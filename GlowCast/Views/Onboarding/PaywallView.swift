@@ -3,8 +3,10 @@ import SwiftUI
 struct PaywallView: View {
     let onSubscribe: () -> Void
     let onRestore: () -> Void
+    var onDismiss: (() -> Void)? = nil
     @State private var selectedPlan: PlanOption = .annual
     @State private var appeared = false
+    @State private var dismissEnabled = false
 
     enum PlanOption { case monthly, annual }
 
@@ -15,6 +17,25 @@ struct PaywallView: View {
                 startPoint: .top, endPoint: .bottom
             )
             .ignoresSafeArea()
+
+            if let onDismiss {
+                VStack {
+                    HStack {
+                        Spacer()
+                        Button(action: onDismiss) {
+                            Image(systemName: "xmark")
+                                .font(.system(size: 16, weight: .semibold))
+                                .foregroundColor(.white.opacity(dismissEnabled ? 0.5 : 0.0))
+                                .frame(width: 44, height: 44)
+                        }
+                        .disabled(!dismissEnabled)
+                    }
+                    .padding(.horizontal, 16)
+                    .padding(.top, 12)
+                    Spacer()
+                }
+                .zIndex(1)
+            }
 
             ScrollView(showsIndicators: false) {
                 VStack(spacing: 0) {
@@ -117,6 +138,11 @@ struct PaywallView: View {
         .onAppear {
             withAnimation(.spring(response: 0.7, dampingFraction: 0.75)) {
                 appeared = true
+            }
+            if onDismiss != nil {
+                DispatchQueue.main.asyncAfter(deadline: .now() + 4) {
+                    withAnimation { dismissEnabled = true }
+                }
             }
         }
     }

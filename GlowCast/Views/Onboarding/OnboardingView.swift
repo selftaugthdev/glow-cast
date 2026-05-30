@@ -57,6 +57,10 @@ struct OnboardingView: View {
                         // RevenueCat restore call goes here
                         vm.completeOnboarding()
                         onComplete()
+                    },
+                    onDismiss: {
+                        vm.completeOnboarding()
+                        onComplete()
                     }
                 )
                 .transition(.asymmetric(
