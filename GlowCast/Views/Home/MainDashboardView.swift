@@ -64,7 +64,7 @@ struct MainDashboardView: View {
                     StatCard(
                         icon: "timer",
                         title: "Safe Tan Time",
-                        value: "\(vm.safeMinutes) min",
+                        value: vm.currentUV < 1 ? "No UV" : "\(vm.safeMinutes) min",
                         color: .glowAmber
                     )
                     StatCard(
@@ -87,7 +87,7 @@ struct MainDashboardView: View {
                 Spacer().frame(height: 16)
 
                 // Start session CTA
-                if !vm.sessionActive {
+                if !vm.sessionActive && vm.currentUV >= 1 {
                     Button {
                         vm.startSession()
                     } label: {
@@ -100,7 +100,7 @@ struct MainDashboardView: View {
                             .cornerRadius(16)
                     }
                     .padding(.horizontal, 20)
-                } else {
+                } else if vm.sessionActive {
                     ActiveSessionBanner(
                         secondsRemaining: vm.sessionSecondsRemaining,
                         totalSeconds: vm.sessionTotalSeconds,

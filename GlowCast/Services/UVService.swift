@@ -46,16 +46,20 @@ final class UVService: ObservableObject {
     }
 
     private func parse(response: OpenMeteoResponse) -> [DailyForecast] {
-        let isoFull = ISO8601DateFormatter()
+        let isoDateTime = DateFormatter()
+        isoDateTime.dateFormat = "yyyy-MM-dd'T'HH:mm"
+        isoDateTime.locale = Locale(identifier: "en_US_POSIX")
+
         let isoDate = DateFormatter()
         isoDate.dateFormat = "yyyy-MM-dd"
+        isoDate.locale = Locale(identifier: "en_US_POSIX")
 
         var dailyMap: [String: (maxUV: Double, sunrise: Date, sunset: Date)] = [:]
         for (i, dateStr) in response.daily.time.enumerated() {
             guard i < response.daily.uv_index_max.count,
                   let date = isoDate.date(from: dateStr),
-                  let sunriseDate = isoFull.date(from: response.daily.sunrise[safe: i] ?? ""),
-                  let sunsetDate = isoFull.date(from: response.daily.sunset[safe: i] ?? "")
+                  let sunriseDate = isoDateTime.date(from: response.daily.sunrise[safe: i] ?? ""),
+                  let sunsetDate = isoDateTime.date(from: response.daily.sunset[safe: i] ?? "")
             else { continue }
             let key = isoDate.string(from: date)
             dailyMap[key] = (response.daily.uv_index_max[i], sunriseDate, sunsetDate)
@@ -63,7 +67,7 @@ final class UVService: ObservableObject {
 
         var hourlyByDay: [String: [HourlyUVEntry]] = [:]
         for (i, timeStr) in response.hourly.time.enumerated() {
-            guard let date = isoFull.date(from: timeStr + ":00"),
+            guard let date = isoDateTime.date(from: timeStr),
                   i < response.hourly.uv_index.count,
                   i < response.hourly.cloud_cover.count
             else { continue }
