@@ -15,14 +15,16 @@ struct SkinScanView: View {
             VStack(spacing: 0) {
                 Spacer().frame(height: 60)
 
-                Text("AI Skin Scan")
+                Text("AI Skin Estimate")
                     .font(.system(size: 32, weight: .black))
                     .foregroundColor(.glowGold)
 
-                Text("Personalized tanning just for you")
+                Text("We'll estimate your skin type to set safe limits")
                     .font(.system(size: 16, weight: .medium))
                     .foregroundColor(.white.opacity(0.6))
                     .padding(.top, 8)
+                    .multilineTextAlignment(.center)
+                    .padding(.horizontal, 24)
 
                 Spacer().frame(height: 48)
 
@@ -94,14 +96,14 @@ struct SkinScanView: View {
                     VStack(spacing: 8) {
                         ProgressView()
                             .tint(.glowAmber)
-                        Text("Analyzing skin tone...")
+                        Text("Estimating skin type...")
                             .font(.system(size: 15, weight: .medium))
                             .foregroundColor(.glowAmber)
                     }
                     .padding(.bottom, 60)
                 } else {
                     Button(action: { showCamera = true }) {
-                        Label("Scan My Skin", systemImage: "camera.fill")
+                        Label("Estimate My Skin Type", systemImage: "camera.fill")
                             .font(.system(size: 18, weight: .bold))
                             .foregroundColor(.glowDark)
                             .frame(maxWidth: .infinity)

@@ -42,7 +42,7 @@ struct OnboardingHeroView: View {
                         .opacity(appeared ? 1 : 0)
                         .offset(y: appeared ? 0 : 20)
 
-                    Text("Get the perfect tan,\nwithout the burn.")
+                    Text("Plan your sun time.\nProtect your skin.")
                         .font(.system(size: 22, weight: .semibold))
                         .foregroundColor(Color.glowCream.opacity(0.9))
                         .multilineTextAlignment(.center)

@@ -12,12 +12,12 @@ final class NotificationService {
 
     func scheduleMorningForecast(tanningWindow: (start: Date, end: Date)?, uvMax: Double) {
         let start = tanningWindow?.start
-        var body = "UV stays low today — not worth it ☁️"
+        var body = "UV stays low today — low burn risk ☁️"
         if let s = start {
             let fmt = DateFormatter()
             fmt.dateFormat = "h a"
             let end = tanningWindow!.end
-            body = "Today's tanning window: \(fmt.string(from: s))–\(fmt.string(from: end)) (UV \(Int(uvMax))) ☀️ Perfect for your skin type"
+            body = "Today's exposure window: \(fmt.string(from: s))–\(fmt.string(from: end)) (UV \(Int(uvMax))) ☀️ Don't forget SPF"
         }
         schedule(id: "morning_forecast", title: "GlowCast", body: body, hour: 8, minute: 0)
     }
@@ -26,7 +26,7 @@ final class NotificationService {
         let trigger = UNTimeIntervalNotificationTrigger(timeInterval: seconds / 2, repeats: false)
         let content = UNMutableNotificationContent()
         content.title = "GlowCast"
-        content.body = "Halfway through your safe tan time — flip over! 😄"
+        content.body = "Halfway through your exposure limit — consider covering up or flipping over 🧴"
         content.sound = .default
         add(request: UNNotificationRequest(identifier: "session_halfway", content: content, trigger: trigger))
     }
@@ -35,7 +35,7 @@ final class NotificationService {
         let trigger = UNTimeIntervalNotificationTrigger(timeInterval: seconds, repeats: false)
         let content = UNMutableNotificationContent()
         content.title = "GlowCast"
-        content.body = "That's your dose for today — cover up or apply SPF 🧴"
+        content.body = "Exposure limit reached — seek shade or apply SPF now 🧴"
         content.sound = .default
         add(request: UNNotificationRequest(identifier: "session_end", content: content, trigger: trigger))
     }

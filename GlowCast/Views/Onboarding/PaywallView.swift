@@ -56,12 +56,12 @@ struct PaywallView: View {
 
                     Spacer().frame(height: 24)
 
-                    Text("Your personal sun guide")
+                    Text("Your personal UV safety guide")
                         .font(.system(size: 28, weight: .black))
                         .foregroundColor(.glowGold)
                         .multilineTextAlignment(.center)
 
-                    Text("Join 50,000+ smart tanners")
+                    Text("Join 50,000+ sun-smart people")
                         .font(.system(size: 14))
                         .foregroundColor(.glowAmber.opacity(0.7))
                         .padding(.top, 6)
@@ -70,10 +70,10 @@ struct PaywallView: View {
 
                     // Benefits
                     VStack(spacing: 14) {
-                        BenefitRow(icon: "wand.and.stars", text: "AI skin type detection")
-                        BenefitRow(icon: "sun.and.horizon.fill", text: "Personalized tanning windows")
-                        BenefitRow(icon: "timer", text: "Burn protection timer")
-                        BenefitRow(icon: "drop.fill", text: "SPF reminders")
+                        BenefitRow(icon: "wand.and.stars", text: "AI skin type estimate")
+                        BenefitRow(icon: "sun.and.horizon.fill", text: "Personalized exposure windows")
+                        BenefitRow(icon: "timer", text: "Burn-risk limit timer")
+                        BenefitRow(icon: "drop.fill", text: "SPF reapplication reminders")
                         BenefitRow(icon: "chart.line.uptrend.xyaxis", text: "3-day UV forecasts")
                     }
                     .padding(.horizontal, 32)

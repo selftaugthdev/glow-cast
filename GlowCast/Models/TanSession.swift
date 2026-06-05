@@ -18,31 +18,31 @@ struct TanSession: Identifiable, Codable {
 }
 
 enum TanGoal: String, CaseIterable, Codable {
-    case safeTan = "Safe Tan"
-    case maximizeGlow = "Maximize Glow"
+    case gradualExposure = "Gradual Exposure"
+    case extendedExposure = "Extended Exposure"
     case protect = "Protect My Skin"
 
     var icon: String {
         switch self {
-        case .safeTan:      return "sun.and.horizon"
-        case .maximizeGlow: return "sparkles"
-        case .protect:      return "shield.lefthalf.filled"
+        case .gradualExposure:  return "sun.and.horizon"
+        case .extendedExposure: return "sparkles"
+        case .protect:          return "shield.lefthalf.filled"
         }
     }
 
     var description: String {
         switch self {
-        case .safeTan:      return "Build color gradually with full protection"
-        case .maximizeGlow: return "Optimize every session for visible results"
-        case .protect:      return "UV alerts only — safety is the priority"
+        case .gradualExposure:  return "Stay well within your burn-risk limit"
+        case .extendedExposure: return "Use your full estimated exposure window"
+        case .protect:          return "UV alerts only — minimize all exposure"
         }
     }
 
     var multiplier: Double {
         switch self {
-        case .safeTan:      return 0.8
-        case .maximizeGlow: return 1.0
-        case .protect:      return 0.6
+        case .gradualExposure:  return 0.8
+        case .extendedExposure: return 1.0
+        case .protect:          return 0.6
         }
     }
 }

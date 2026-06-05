@@ -17,6 +17,12 @@ struct ScanResultView: View {
                     .foregroundColor(.glowGold)
                     .opacity(appeared ? 1 : 0)
 
+                Text("AI estimate — adjust below if it's off")
+                    .font(.system(size: 13))
+                    .foregroundColor(.white.opacity(0.45))
+                    .padding(.top, 6)
+                    .opacity(appeared ? 1 : 0)
+
                 Spacer().frame(height: 40)
 
                 // Skin type card

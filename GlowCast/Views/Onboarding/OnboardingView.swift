@@ -50,11 +50,12 @@ struct OnboardingView: View {
             case .paywall:
                 PaywallView(
                     onSubscribe: {
+                        PremiumState.shared.unlock()
                         vm.completeOnboarding()
                         onComplete()
                     },
                     onRestore: {
-                        // RevenueCat restore call goes here
+                        PremiumState.shared.unlock()
                         vm.completeOnboarding()
                         onComplete()
                     },

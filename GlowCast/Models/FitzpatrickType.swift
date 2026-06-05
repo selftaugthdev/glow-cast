@@ -56,10 +56,10 @@ enum FitzpatrickType: String, CaseIterable, Codable {
     }
 
     func safeExposureMinutes(uvIndex: Double) -> Int {
-        guard uvIndex > 0 else { return 999 }
+        guard uvIndex >= 1 else { return 0 }
         let irradiance = uvIndex * 0.0025 // mW/cm²
         let seconds = med / irradiance
-        return max(1, Int(seconds / 60))
+        return min(120, max(1, Int(seconds / 60)))
     }
 
     func recommendedSPF(uvIndex: Double) -> Int {

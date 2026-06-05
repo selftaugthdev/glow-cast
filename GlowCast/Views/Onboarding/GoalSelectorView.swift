@@ -15,7 +15,7 @@ struct GoalSelectorView: View {
                     Text("What's your goal?")
                         .font(.system(size: 32, weight: .black))
                         .foregroundColor(.glowGold)
-                    Text("We'll personalize your tanning plan")
+                    Text("We'll personalize your UV exposure plan")
                         .font(.system(size: 16))
                         .foregroundColor(.white.opacity(0.6))
                 }

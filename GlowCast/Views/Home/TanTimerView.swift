@@ -8,13 +8,13 @@ struct TanTimerView: View {
             VStack(spacing: 0) {
                 Spacer().frame(height: 60)
 
-                Text("Tan Timer")
+                Text("Exposure Timer")
                     .font(.system(size: 32, weight: .black))
                     .foregroundColor(.white)
                     .frame(maxWidth: .infinity, alignment: .leading)
                     .padding(.horizontal, 28)
 
-                Text("Safe tanning for your skin type")
+                Text("Burn-risk limit for your skin type")
                     .font(.system(size: 15))
                     .foregroundColor(.white.opacity(0.55))
                     .frame(maxWidth: .infinity, alignment: .leading)
@@ -63,15 +63,16 @@ struct TanTimerView: View {
                             Text("remaining")
                                 .font(.system(size: 14))
                                 .foregroundColor(.white.opacity(0.5))
-                        } else if vm.currentUV < 1 {
+                        } else if vm.currentUV < 3 {
                             VStack(spacing: 6) {
-                                Text("No UV")
+                                Text("UV \(String(format: "%.1f", vm.currentUV))")
                                     .font(.system(size: 48, weight: .black, design: .rounded))
                                     .foregroundColor(.white.opacity(0.5))
-                                Text("Come back when the sun is out")
+                                Text("Burn risk is low — no timer needed below UV 3")
                                     .font(.system(size: 13))
                                     .foregroundColor(.white.opacity(0.35))
                                     .multilineTextAlignment(.center)
+                                    .padding(.horizontal, 20)
                             }
                         } else {
                             VStack(spacing: 6) {
@@ -81,7 +82,7 @@ struct TanTimerView: View {
                                 Text("minutes")
                                     .font(.system(size: 16))
                                     .foregroundColor(.white.opacity(0.55))
-                                Text("for \(vm.skinType.displayName) at UV \(String(format: "%.0f", vm.currentUV))")
+                                Text("estimated limit for \(vm.skinType.displayName) at UV \(String(format: "%.0f", vm.currentUV))")
                                     .font(.system(size: 13))
                                     .foregroundColor(.glowAmber.opacity(0.8))
                             }
@@ -89,7 +90,15 @@ struct TanTimerView: View {
                     }
                 }
 
-                Spacer().frame(height: 48)
+                Spacer().frame(height: 16)
+
+                Text("Not medical advice. No UV exposure is risk-free.")
+                    .font(.system(size: 11))
+                    .foregroundColor(.white.opacity(0.3))
+                    .multilineTextAlignment(.center)
+                    .padding(.horizontal, 40)
+
+                Spacer().frame(height: 32)
 
                 if vm.sessionComplete {
                     Button {
@@ -121,7 +130,7 @@ struct TanTimerView: View {
                             )
                     }
                     .padding(.horizontal, 28)
-                } else if vm.currentUV >= 1 {
+                } else if vm.currentUV >= 3 {
                     Button {
                         vm.startSession()
                     } label: {
@@ -142,8 +151,13 @@ struct TanTimerView: View {
     }
 
     private var timerString: String {
-        let m = vm.sessionSecondsRemaining / 60
-        let s = vm.sessionSecondsRemaining % 60
+        let total = vm.sessionSecondsRemaining
+        let h = total / 3600
+        let m = (total % 3600) / 60
+        let s = total % 60
+        if h > 0 {
+            return String(format: "%d:%02d:%02d", h, m, s)
+        }
         return String(format: "%02d:%02d", m, s)
     }
 }

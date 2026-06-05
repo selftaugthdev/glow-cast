@@ -2,7 +2,9 @@ import SwiftUI
 
 struct HomeView: View {
     @StateObject private var vm = HomeViewModel()
+    @EnvironmentObject private var premium: PremiumState
     @State private var selectedTab: Tab = .home
+    @State private var showPaywall = false
 
     enum Tab { case home, forecast, timer, spf }
 
@@ -17,14 +19,32 @@ struct HomeView: View {
                     MainDashboardView(vm: vm)
                         .tag(Tab.home)
 
-                    ForecastView(forecast: vm.threeDayForecast, today: vm.todayForecast)
+                    if premium.isPremium {
+                        ForecastView(forecast: vm.threeDayForecast, today: vm.todayForecast)
+                            .tag(Tab.forecast)
+                    } else {
+                        LockedFeatureView(
+                            icon: "chart.bar.fill",
+                            title: "3-Day UV Forecast",
+                            onUnlock: { showPaywall = true }
+                        )
                         .tag(Tab.forecast)
+                    }
 
                     TanTimerView(vm: vm)
                         .tag(Tab.timer)
 
-                    SPFCalculatorView(skinType: vm.skinType, uvIndex: vm.currentUV)
+                    if premium.isPremium {
+                        SPFCalculatorView(skinType: vm.skinType, uvIndex: vm.currentUV)
+                            .tag(Tab.spf)
+                    } else {
+                        LockedFeatureView(
+                            icon: "drop.fill",
+                            title: "Advanced SPF Calculator",
+                            onUnlock: { showPaywall = true }
+                        )
                         .tag(Tab.spf)
+                    }
                 }
                 .tabViewStyle(.page(indexDisplayMode: .never))
             }
@@ -36,6 +56,64 @@ struct HomeView: View {
             }
         }
         .task { await vm.load() }
+        .sheet(isPresented: $showPaywall) {
+            PaywallView(
+                onSubscribe: {
+                    PremiumState.shared.unlock()
+                    showPaywall = false
+                },
+                onRestore: {
+                    PremiumState.shared.unlock()
+                    showPaywall = false
+                },
+                onDismiss: { showPaywall = false }
+            )
+        }
+    }
+}
+
+struct LockedFeatureView: View {
+    let icon: String
+    let title: String
+    let onUnlock: () -> Void
+
+    var body: some View {
+        VStack(spacing: 24) {
+            ZStack {
+                Circle()
+                    .fill(Color.glowAmber.opacity(0.12))
+                    .frame(width: 100, height: 100)
+                Image(systemName: icon)
+                    .font(.system(size: 36))
+                    .foregroundColor(.glowAmber.opacity(0.5))
+                Image(systemName: "lock.fill")
+                    .font(.system(size: 16, weight: .bold))
+                    .foregroundColor(.glowGold)
+                    .offset(x: 22, y: 22)
+            }
+
+            VStack(spacing: 8) {
+                Text(title)
+                    .font(.system(size: 22, weight: .black))
+                    .foregroundColor(.white)
+                Text("Upgrade to GlowCast Premium\nto unlock this feature.")
+                    .font(.system(size: 15))
+                    .foregroundColor(.white.opacity(0.55))
+                    .multilineTextAlignment(.center)
+            }
+
+            Button(action: onUnlock) {
+                Text("Unlock Premium")
+                    .font(.system(size: 17, weight: .bold))
+                    .foregroundColor(.glowDark)
+                    .frame(maxWidth: .infinity)
+                    .padding(.vertical, 16)
+                    .background(Color.glowGold)
+                    .cornerRadius(14)
+            }
+            .padding(.horizontal, 40)
+        }
+        .frame(maxWidth: .infinity, maxHeight: .infinity)
     }
 }
 

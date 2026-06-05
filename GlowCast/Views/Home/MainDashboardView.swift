@@ -2,6 +2,7 @@ import SwiftUI
 
 struct MainDashboardView: View {
     @ObservedObject var vm: HomeViewModel
+    @EnvironmentObject private var premium: PremiumState
     @State private var sunPulse: CGFloat = 1.0
 
     var body: some View {
@@ -53,20 +54,32 @@ struct MainDashboardView: View {
 
                 Spacer().frame(height: 32)
 
-                // Tanning window card
-                TanningWindowCard(forecast: vm.todayForecast, skinType: vm.skinType)
-                    .padding(.horizontal, 20)
+                // Sun Exposure Score (premium)
+                if premium.isPremium {
+                    SunExposureScoreCard(level: vm.exposureScore)
+                        .padding(.horizontal, 20)
+                }
+
+                // Exposure window card (premium)
+                if premium.isPremium {
+                    TanningWindowCard(forecast: vm.todayForecast, skinType: vm.skinType)
+                        .padding(.horizontal, 20)
+                }
 
                 Spacer().frame(height: 16)
 
-                // Safe time + SPF row
+                // Burn-risk limit + SPF row
                 HStack(spacing: 12) {
-                    StatCard(
-                        icon: "timer",
-                        title: "Safe Tan Time",
-                        value: vm.currentUV < 1 ? "No UV" : "\(vm.safeMinutes) min",
-                        color: .glowAmber
-                    )
+                    if premium.isPremium {
+                        StatCard(
+                            icon: "timer",
+                            title: "Burn-Risk Limit",
+                            value: vm.currentUV < 3 ? "Low risk" : "\(vm.safeMinutes) min",
+                            color: .glowAmber
+                        )
+                    } else {
+                        LockedStatCard(icon: "timer", title: "Burn-Risk Limit")
+                    }
                     StatCard(
                         icon: "drop.fill",
                         title: "SPF Needed",
@@ -87,11 +100,11 @@ struct MainDashboardView: View {
                 Spacer().frame(height: 16)
 
                 // Start session CTA
-                if !vm.sessionActive && vm.currentUV >= 1 {
+                if !vm.sessionActive && vm.currentUV >= 3 {
                     Button {
                         vm.startSession()
                     } label: {
-                        Label("Start Tan Session", systemImage: "play.fill")
+                        Label("Start Exposure Timer", systemImage: "play.fill")
                             .font(.system(size: 17, weight: .bold))
                             .foregroundColor(.glowDark)
                             .frame(maxWidth: .infinity)
@@ -134,7 +147,7 @@ struct TanningWindowCard: View {
 
     var body: some View {
         VStack(alignment: .leading, spacing: 12) {
-            Label("Today's Tanning Window", systemImage: "sun.and.horizon.fill")
+            Label("Today's Exposure Window", systemImage: "sun.and.horizon.fill")
                 .font(.system(size: 13, weight: .semibold))
                 .foregroundColor(.glowAmber.opacity(0.9))
 
@@ -144,7 +157,7 @@ struct TanningWindowCard: View {
                         Text(timeRange(window.start, window.end))
                             .font(.system(size: 22, weight: .black))
                             .foregroundColor(.white)
-                        Text("Best hours for \(skinType.displayName) skin")
+                        Text("Lowest burn risk for \(skinType.displayName) skin")
                             .font(.system(size: 13))
                             .foregroundColor(.white.opacity(0.6))
                     }
@@ -172,7 +185,7 @@ struct TanningWindowCard: View {
                 HStack {
                     Image(systemName: "cloud.fill")
                         .foregroundColor(.white.opacity(0.4))
-                    Text("No ideal tanning window today")
+                    Text("No low-risk exposure window today")
                         .font(.system(size: 15))
                         .foregroundColor(.white.opacity(0.5))
                 }
@@ -329,6 +342,88 @@ struct ActiveSessionBanner: View {
                 .overlay(
                     RoundedRectangle(cornerRadius: 16)
                         .stroke(Color.glowAmber.opacity(0.3), lineWidth: 1)
+                )
+        )
+    }
+}
+
+struct SunExposureScoreCard: View {
+    let level: ExposureLevel
+
+    var body: some View {
+        HStack(spacing: 16) {
+            ZStack {
+                Circle()
+                    .fill(level.color.opacity(0.15))
+                    .frame(width: 52, height: 52)
+                Image(systemName: level.icon)
+                    .font(.system(size: 22))
+                    .foregroundColor(level.color)
+            }
+
+            VStack(alignment: .leading, spacing: 4) {
+                HStack(spacing: 8) {
+                    Text("Exposure Score")
+                        .font(.system(size: 12, weight: .medium))
+                        .foregroundColor(.white.opacity(0.55))
+                    Text(level.rawValue)
+                        .font(.system(size: 13, weight: .bold))
+                        .foregroundColor(level.color)
+                        .padding(.horizontal, 8)
+                        .padding(.vertical, 2)
+                        .background(level.color.opacity(0.15))
+                        .cornerRadius(6)
+                }
+                Text(level.advice)
+                    .font(.system(size: 13))
+                    .foregroundColor(.white.opacity(0.7))
+                    .lineLimit(2)
+            }
+        }
+        .padding(16)
+        .frame(maxWidth: .infinity, alignment: .leading)
+        .background(
+            RoundedRectangle(cornerRadius: 16)
+                .fill(Color.white.opacity(0.06))
+                .overlay(
+                    RoundedRectangle(cornerRadius: 16)
+                        .stroke(level.color.opacity(0.3), lineWidth: 1)
+                )
+        )
+    }
+}
+
+struct LockedStatCard: View {
+    let icon: String
+    let title: String
+
+    var body: some View {
+        VStack(alignment: .leading, spacing: 8) {
+            HStack {
+                Image(systemName: icon)
+                    .font(.system(size: 14))
+                    .foregroundColor(.white.opacity(0.25))
+                Text(title)
+                    .font(.system(size: 12, weight: .medium))
+                    .foregroundColor(.white.opacity(0.25))
+            }
+            HStack(spacing: 6) {
+                Image(systemName: "lock.fill")
+                    .font(.system(size: 14))
+                    .foregroundColor(.glowGold.opacity(0.7))
+                Text("Premium")
+                    .font(.system(size: 16, weight: .black))
+                    .foregroundColor(.glowGold.opacity(0.7))
+            }
+        }
+        .padding(16)
+        .frame(maxWidth: .infinity, alignment: .leading)
+        .background(
+            RoundedRectangle(cornerRadius: 16)
+                .fill(Color.white.opacity(0.04))
+                .overlay(
+                    RoundedRectangle(cornerRadius: 16)
+                        .stroke(Color.glowGold.opacity(0.2), lineWidth: 1)
                 )
         )
     }

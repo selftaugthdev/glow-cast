@@ -27,13 +27,14 @@ final class HomeViewModel: ObservableObject {
     }
 
     var tanGoal: TanGoal {
-        let raw = UserDefaults.standard.string(forKey: "tanGoal") ?? TanGoal.safeTan.rawValue
-        return TanGoal(rawValue: raw) ?? .safeTan
+        let raw = UserDefaults.standard.string(forKey: "tanGoal") ?? TanGoal.gradualExposure.rawValue
+        return TanGoal(rawValue: raw) ?? .gradualExposure
     }
 
     var safeMinutes: Int {
         let base = skinType.safeExposureMinutes(uvIndex: currentUV)
-        return max(1, Int(Double(base) * tanGoal.multiplier))
+        guard base > 0 else { return 0 }
+        return min(120, max(1, Int(Double(base) * tanGoal.multiplier)))
     }
 
     var recommendedSPF: Int {
@@ -42,6 +43,14 @@ final class HomeViewModel: ObservableObject {
 
     var tanningWindow: (start: Date, end: Date)? {
         todayForecast?.tanningWindow
+    }
+
+    var exposureScore: ExposureLevel {
+        SunExposureScore.calculate(
+            uvIndex: currentUV,
+            skinType: skinType,
+            cloudCoverPercent: todayForecast?.averageCloudCover ?? 0
+        )
     }
 
     var sessionProgress: Double {
@@ -67,7 +76,7 @@ final class HomeViewModel: ObservableObject {
     }
 
     func startSession() {
-        guard !sessionActive else { return }
+        guard !sessionActive, currentUV >= 3 else { return }
         let seconds = safeMinutes * 60
         sessionTotalSeconds = seconds
         sessionSecondsRemaining = seconds

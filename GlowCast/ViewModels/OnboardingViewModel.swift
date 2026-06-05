@@ -14,7 +14,7 @@ enum OnboardingStep: Int, CaseIterable {
 final class OnboardingViewModel: ObservableObject {
     @Published var currentStep: OnboardingStep = .hero
     @Published var skinType: FitzpatrickType = .typeII
-    @Published var tanGoal: TanGoal = .safeTan
+    @Published var tanGoal: TanGoal = .gradualExposure
     @Published var isScanning = false
     @Published var scanComplete = false
     @Published var scanError: String?
