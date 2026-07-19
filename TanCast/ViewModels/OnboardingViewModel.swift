@@ -20,7 +20,7 @@ final class OnboardingViewModel: ObservableObject {
     @Published var scanError: String?
     @Published var notificationsGranted = false
 
-    private let claudeService = ClaudeVisionService()
+    private let skinToneService = SkinToneService()
 
     var progress: Double {
         Double(currentStep.rawValue) / Double(OnboardingStep.allCases.count - 1)
@@ -39,7 +39,7 @@ final class OnboardingViewModel: ObservableObject {
         // Fake progress delay for dramatic effect
         try? await Task.sleep(nanoseconds: 1_800_000_000)
         do {
-            skinType = try await claudeService.analyzeSkinType(image: image)
+            skinType = try await skinToneService.analyzeSkinType(image: image)
             scanComplete = true
         } catch {
             // Don't silently assign a type — the result screen routes to the manual picker.

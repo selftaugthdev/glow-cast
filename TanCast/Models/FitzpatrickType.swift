@@ -90,4 +90,17 @@ enum FitzpatrickType: String, CaseIterable, Codable {
     static func from(romanNumeral: String) -> FitzpatrickType? {
         allCases.first { $0.rawValue == romanNumeral.uppercased() }
     }
+
+    /// Maps an Individual Typology Angle (ITA°) to a Fitzpatrick type using the
+    /// standard dermatological thresholds (Chardon et al.).
+    static func from(ita: Double) -> FitzpatrickType {
+        switch ita {
+        case 55...:      return .typeI
+        case 41..<55:    return .typeII
+        case 28..<41:    return .typeIII
+        case 10..<28:    return .typeIV
+        case -30..<10:   return .typeV
+        default:         return .typeVI
+        }
+    }
 }

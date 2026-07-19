@@ -11,7 +11,7 @@
 		136549A6AAA94409B145B214 /* GoalSelectorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6B881C7538F4F0790AD348F /* GoalSelectorView.swift */; };
 		1B17554C17194FE4A4DF2D66 /* OnboardingHeroView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB52CB186DD84E06B5C6180F /* OnboardingHeroView.swift */; };
 		396BD6D89E554C86B00D17C5 /* PaywallView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F8FEF2F7B964ECD80CBBCCA /* PaywallView.swift */; };
-		3B50A213D93241CA90810D44 /* ClaudeVisionService.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC78349C392C46E18676E54E /* ClaudeVisionService.swift */; };
+		26157F8B64D94ED68BF8892F /* SkinToneService.swift in Sources */ = {isa = PBXBuildFile; fileRef = C1799C6F53214A588175FB0B /* SkinToneService.swift */; };
 		3E101225FD354C9AB936D896 /* TanCastApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7FDC8F81F5B046C49C077B47 /* TanCastApp.swift */; };
 		5113CCA9398A4D7FA0836D5D /* HomeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 906B88864533491A8D043FCB /* HomeViewModel.swift */; };
 		51E8CB9F3D2F41A6968E14E1 /* SPFCalculatorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C4EAF59B9954C29AC3B3DAD /* SPFCalculatorView.swift */; };
@@ -82,7 +82,7 @@
 		E59851BB9F3540878AB380C6 /* OnboardingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingView.swift; sourceTree = "<group>"; };
 		F6B881C7538F4F0790AD348F /* GoalSelectorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GoalSelectorView.swift; sourceTree = "<group>"; };
 		F8002C3A82CB13F822E89D0B /* Trip.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Trip.swift; sourceTree = "<group>"; };
-		FC78349C392C46E18676E54E /* ClaudeVisionService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClaudeVisionService.swift; sourceTree = "<group>"; };
+		C1799C6F53214A588175FB0B /* SkinToneService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SkinToneService.swift; sourceTree = "<group>"; };
 		1DF945EA9B544AA78CB604B1 /* GoogleService-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -136,7 +136,7 @@
 		6E21560CC19C4805A701495F /* Services */ = {
 			isa = PBXGroup;
 			children = (
-				FC78349C392C46E18676E54E /* ClaudeVisionService.swift */,
+				C1799C6F53214A588175FB0B /* SkinToneService.swift */,
 				D649B8EC602E4A6781620BDC /* LocationService.swift */,
 				87DF5A43B9044FFFA0A15476 /* NotificationService.swift */,
 				6AF9428AA5564405AA78D73A /* SessionHistoryStore.swift */,
@@ -332,7 +332,7 @@
 				F51120D7539545F88812727A /* FitzpatrickType.swift in Sources */,
 				8A2B980C8684470FAAB924BB /* TanSession.swift in Sources */,
 				D95A9D3AB3A147D08F62C6A8 /* UVData.swift in Sources */,
-				3B50A213D93241CA90810D44 /* ClaudeVisionService.swift in Sources */,
+				26157F8B64D94ED68BF8892F /* SkinToneService.swift in Sources */,
 				0FA5DF4AE32F477A926A2E65 /* LocationService.swift in Sources */,
 				68453848878C4AC1A68D0260 /* NotificationService.swift in Sources */,
 				D10D718CEE1B4A95B29F2B4E /* SessionHistoryStore.swift in Sources */,
