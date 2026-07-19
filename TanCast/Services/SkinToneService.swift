@@ -65,10 +65,13 @@ final class SkinToneService {
         let result = FitzpatrickType.from(ita: ita)
 
         #if DEBUG
+        let lumas = samples.map { 0.299 * $0.r + 0.587 * $0.g + 0.114 * $0.b }
+        let minLuma = lumas.min() ?? 0
+        let maxLuma = lumas.max() ?? 0
         print("""
         [SkinToneService] image size=\(image.size) scale=\(image.scale) orientation=\(image.imageOrientation.rawValue)
         [SkinToneService] buffer=\(buffer.width)x\(buffer.height) faceBox(norm)=\(box) faceRect(px)=\(faceRect)
-        [SkinToneService] samples=\(samples.count) avgRGB=(\(Int(averageColor.r * 255)), \(Int(averageColor.g * 255)), \(Int(averageColor.b * 255)))
+        [SkinToneService] samples=\(samples.count) avgRGB=(\(Int(averageColor.r * 255)), \(Int(averageColor.g * 255)), \(Int(averageColor.b * 255))) lumaRange=(\(Int(minLuma * 255))-\(Int(maxLuma * 255)))
         [SkinToneService] ITA=\(ita) -> \(result.displayName)
         """)
         #endif
@@ -79,12 +82,15 @@ final class SkinToneService {
     // MARK: - Pixel sampling
 
     private func samplePixels(from buffer: RGBABuffer, faceRect: CGRect) -> [(r: Double, g: Double, b: Double)]? {
-        // Forehead + both cheeks, as proportions of the face bounding box — avoids
-        // eyes, brows, nostrils, and mouth without needing full landmark detection.
+        // A single patch dead-center in the face box — squarely between the eyes
+        // (above) and mouth (below), well clear of the box's outer edges (ears,
+        // jaw shadow) and top (hairline/brows). Deliberately conservative: a
+        // multi-region approach (forehead + cheeks) is more thorough in theory,
+        // but each small region is sensitive to exactly where Vision's box edges
+        // fall, and a mis-targeted patch (e.g. landing on eyebrow shadow) silently
+        // pollutes the average with no way to detect it.
         let patches: [CGRect] = [
-            proportionalRect(in: faceRect, x: 0.35, y: 0.12, w: 0.30, h: 0.14), // forehead
-            proportionalRect(in: faceRect, x: 0.12, y: 0.50, w: 0.20, h: 0.16), // left cheek
-            proportionalRect(in: faceRect, x: 0.68, y: 0.50, w: 0.20, h: 0.16)  // right cheek
+            proportionalRect(in: faceRect, x: 0.28, y: 0.38, w: 0.44, h: 0.26)
         ]
 
         var samples: [(r: Double, g: Double, b: Double)] = []
