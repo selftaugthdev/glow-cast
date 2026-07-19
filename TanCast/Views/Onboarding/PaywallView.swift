@@ -7,6 +7,7 @@ struct PaywallView: View {
     var onDismiss: (() -> Void)? = nil
 
     @State private var offering: Offering?
+    @State private var offeringsFailed = false
     @State private var selectedPackage: Package?
     @State private var appeared = false
     @State private var dismissEnabled = false
@@ -120,6 +121,27 @@ struct PaywallView: View {
                                 .foregroundColor(.glowAmber.opacity(0.7))
                                 .padding(.top, 12)
                         }
+                    } else if offeringsFailed {
+                        VStack(spacing: 14) {
+                            Text("Couldn't load subscription plans.")
+                                .font(.system(size: 15, weight: .semibold))
+                                .foregroundColor(.white.opacity(0.7))
+                                .multilineTextAlignment(.center)
+
+                            Button {
+                                Task { await loadOfferings() }
+                            } label: {
+                                Text("Retry")
+                                    .font(.system(size: 15, weight: .bold))
+                                    .foregroundColor(.glowDark)
+                                    .padding(.horizontal, 28)
+                                    .padding(.vertical, 12)
+                                    .background(Color.glowGold)
+                                    .cornerRadius(12)
+                            }
+                        }
+                        .padding(.horizontal, 32)
+                        .padding(.vertical, 32)
                     } else {
                         ProgressView()
                             .tint(.glowGold)
@@ -196,9 +218,21 @@ struct PaywallView: View {
             }
         }
         .task {
-            guard let currentOffering = try? await PremiumState.shared.fetchOfferings() else { return }
+            await loadOfferings()
+        }
+    }
+
+    private func loadOfferings() async {
+        offeringsFailed = false
+        do {
+            guard let currentOffering = try await PremiumState.shared.fetchOfferings() else {
+                offeringsFailed = true
+                return
+            }
             offering = currentOffering
             selectedPackage = currentOffering.annual ?? currentOffering.availablePackages.first
+        } catch {
+            offeringsFailed = true
         }
     }
 
