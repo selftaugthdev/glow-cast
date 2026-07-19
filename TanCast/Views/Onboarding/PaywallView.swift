@@ -18,6 +18,16 @@ struct PaywallView: View {
         selectedPackage?.storeProduct.introductoryDiscount != nil
     }
 
+    private var annualSavingsPercent: Int? {
+        guard let monthly = offering?.monthly, let annual = offering?.annual else { return nil }
+        let monthlyPrice = (monthly.storeProduct.price as NSDecimalNumber).doubleValue
+        let annualPrice = (annual.storeProduct.price as NSDecimalNumber).doubleValue
+        guard monthlyPrice > 0 else { return nil }
+        let savings = 1 - (annualPrice / 12 / monthlyPrice)
+        guard savings > 0 else { return nil }
+        return Int((savings * 100).rounded())
+    }
+
     var body: some View {
         ZStack {
             LinearGradient(
@@ -107,7 +117,7 @@ struct PaywallView: View {
                                     title: "Annual",
                                     price: annual.storeProduct.localizedPriceString,
                                     subtitle: "per year",
-                                    badge: "BEST VALUE",
+                                    badge: annualSavingsPercent.map { "SAVE \($0)%" } ?? "BEST VALUE",
                                     isSelected: selectedPackage?.identifier == annual.identifier
                                 ) { selectedPackage = annual }
                             }
