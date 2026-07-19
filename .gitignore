@@ -1,6 +1,6 @@
 # Environment / secrets — never commit
 .env
-GlowCast/Config/Secrets.swift
+TanCast/Config/Secrets.swift
 
 # Xcode
 *.xcuserstate

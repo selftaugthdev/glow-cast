@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Reads .env from the project root and writes GlowCast/Config/Secrets.swift.
+# Reads .env from the project root and writes TanCast/Config/Secrets.swift.
 # Run once after cloning: ./scripts/generate_secrets.sh
 
 set -euo pipefail
@@ -7,7 +7,7 @@ set -euo pipefail
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 ROOT="$SCRIPT_DIR/.."
 ENV_FILE="$ROOT/.env"
-OUT="$ROOT/GlowCast/Config/Secrets.swift"
+OUT="$ROOT/TanCast/Config/Secrets.swift"
 
 if [ ! -f "$ENV_FILE" ]; then
   echo "ERROR: .env not found. Copy .env.example → .env and fill in your keys."
