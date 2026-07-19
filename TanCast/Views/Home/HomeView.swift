@@ -81,14 +81,8 @@ struct HomeView: View {
         }
         .sheet(isPresented: $showPaywall) {
             PaywallView(
-                onSubscribe: {
-                    PremiumState.shared.unlock()
-                    showPaywall = false
-                },
-                onRestore: {
-                    PremiumState.shared.unlock()
-                    showPaywall = false
-                },
+                onSubscribe: { showPaywall = false },
+                onRestore: { showPaywall = false },
                 onDismiss: { showPaywall = false }
             )
         }

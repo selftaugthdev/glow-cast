@@ -1,14 +1,21 @@
 import SwiftUI
+import RevenueCat
 
 struct PaywallView: View {
     let onSubscribe: () -> Void
     let onRestore: () -> Void
     var onDismiss: (() -> Void)? = nil
-    @State private var selectedPlan: PlanOption = .annual
+
+    @State private var offering: Offering?
+    @State private var selectedPackage: Package?
     @State private var appeared = false
     @State private var dismissEnabled = false
+    @State private var isPurchasing = false
+    @State private var errorMessage: String?
 
-    enum PlanOption { case monthly, annual }
+    private var hasFreeTrial: Bool {
+        selectedPackage?.storeProduct.introductoryDiscount != nil
+    }
 
     var body: some View {
         ZStack {
@@ -82,52 +89,83 @@ struct PaywallView: View {
                     Spacer().frame(height: 32)
 
                     // Plan picker
-                    HStack(spacing: 12) {
-                        PlanCard(
-                            title: "Monthly",
-                            price: "$6.99",
-                            subtitle: "per month",
-                            badge: nil,
-                            isSelected: selectedPlan == .monthly
-                        ) { selectedPlan = .monthly }
+                    if let offering {
+                        HStack(spacing: 12) {
+                            if let monthly = offering.monthly {
+                                PlanCard(
+                                    title: "Monthly",
+                                    price: monthly.storeProduct.localizedPriceString,
+                                    subtitle: "per month",
+                                    badge: nil,
+                                    isSelected: selectedPackage?.identifier == monthly.identifier
+                                ) { selectedPackage = monthly }
+                            }
 
-                        PlanCard(
-                            title: "Annual",
-                            price: "$29.99",
-                            subtitle: "$2.50/month",
-                            badge: "BEST VALUE",
-                            isSelected: selectedPlan == .annual
-                        ) { selectedPlan = .annual }
+                            if let annual = offering.annual {
+                                PlanCard(
+                                    title: "Annual",
+                                    price: annual.storeProduct.localizedPriceString,
+                                    subtitle: "per year",
+                                    badge: "BEST VALUE",
+                                    isSelected: selectedPackage?.identifier == annual.identifier
+                                ) { selectedPackage = annual }
+                            }
+                        }
+                        .padding(.horizontal, 24)
+                        .opacity(appeared ? 1 : 0)
+
+                        if hasFreeTrial {
+                            Text("Free trial included")
+                                .font(.system(size: 13))
+                                .foregroundColor(.glowAmber.opacity(0.7))
+                                .padding(.top, 12)
+                        }
+                    } else {
+                        ProgressView()
+                            .tint(.glowGold)
+                            .padding(.vertical, 40)
                     }
-                    .padding(.horizontal, 24)
-                    .opacity(appeared ? 1 : 0)
 
-                    Text("7-day free trial included")
-                        .font(.system(size: 13))
-                        .foregroundColor(.glowAmber.opacity(0.7))
-                        .padding(.top, 12)
+                    if let errorMessage {
+                        Text(errorMessage)
+                            .font(.system(size: 13))
+                            .foregroundColor(.red.opacity(0.85))
+                            .multilineTextAlignment(.center)
+                            .padding(.horizontal, 32)
+                            .padding(.top, 12)
+                    }
 
                     Spacer().frame(height: 32)
 
-                    Button(action: onSubscribe) {
-                        Text(selectedPlan == .annual ? "Start Free Trial" : "Subscribe Monthly")
-                            .font(.system(size: 18, weight: .bold))
-                            .foregroundColor(.glowDark)
-                            .frame(maxWidth: .infinity)
-                            .padding(.vertical, 18)
-                            .background(Color.glowGold)
-                            .cornerRadius(16)
+                    Button(action: purchase) {
+                        if isPurchasing {
+                            ProgressView()
+                                .tint(.glowDark)
+                                .frame(maxWidth: .infinity)
+                                .padding(.vertical, 18)
+                        } else {
+                            Text(hasFreeTrial ? "Start Free Trial" : "Subscribe")
+                                .font(.system(size: 18, weight: .bold))
+                                .foregroundColor(.glowDark)
+                                .frame(maxWidth: .infinity)
+                                .padding(.vertical, 18)
+                        }
                     }
+                    .background(Color.glowGold)
+                    .cornerRadius(16)
                     .padding(.horizontal, 24)
+                    .disabled(selectedPackage == nil || isPurchasing)
+                    .opacity(selectedPackage == nil ? 0.5 : 1)
 
-                    Button(action: onRestore) {
+                    Button(action: restore) {
                         Text("Restore Purchase")
                             .font(.system(size: 14))
                             .foregroundColor(.white.opacity(0.35))
                     }
                     .padding(.top, 14)
+                    .disabled(isPurchasing)
 
-                    Text("Cancel anytime. Billed \(selectedPlan == .annual ? "annually" : "monthly").")
+                    Text("Cancel anytime. Billed \(selectedPackage?.packageType == .annual ? "annually" : "monthly").")
                         .font(.system(size: 11))
                         .foregroundColor(.white.opacity(0.25))
                         .padding(.top, 8)
@@ -155,6 +193,48 @@ struct PaywallView: View {
                 DispatchQueue.main.asyncAfter(deadline: .now() + 4) {
                     withAnimation { dismissEnabled = true }
                 }
+            }
+        }
+        .task {
+            guard let currentOffering = try? await PremiumState.shared.fetchOfferings() else { return }
+            offering = currentOffering
+            selectedPackage = currentOffering.annual ?? currentOffering.availablePackages.first
+        }
+    }
+
+    private func purchase() {
+        guard let package = selectedPackage else { return }
+        isPurchasing = true
+        errorMessage = nil
+        Task {
+            do {
+                try await PremiumState.shared.purchase(package: package)
+                isPurchasing = false
+                onSubscribe()
+            } catch ErrorCode.purchaseCancelledError {
+                isPurchasing = false
+            } catch {
+                isPurchasing = false
+                errorMessage = "Something went wrong with the purchase. Please try again."
+            }
+        }
+    }
+
+    private func restore() {
+        isPurchasing = true
+        errorMessage = nil
+        Task {
+            do {
+                let info = try await PremiumState.shared.restore()
+                isPurchasing = false
+                if info.entitlements[PremiumState.entitlementID]?.isActive == true {
+                    onRestore()
+                } else {
+                    errorMessage = "No previous purchase found for this account."
+                }
+            } catch {
+                isPurchasing = false
+                errorMessage = "Restore failed. Please try again."
             }
         }
     }

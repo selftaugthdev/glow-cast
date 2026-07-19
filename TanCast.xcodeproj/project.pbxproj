@@ -44,6 +44,7 @@
 		73EF3D6B24064BC0BB09FD92 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 1DF945EA9B544AA78CB604B1 /* GoogleService-Info.plist */; };
 		FA712FCA2F484EDCB48DDC13 /* FirebaseAnalytics in Frameworks */ = {isa = PBXBuildFile; productRef = 9862270174A949BE8CF7166E /* FirebaseAnalytics */; };
 		63191A0F1B384E17BCE808C4 /* FirebaseCrashlytics in Frameworks */ = {isa = PBXBuildFile; productRef = D533391A5C4A445D9BE29FF3 /* FirebaseCrashlytics */; };
+		6D98FA584D7C49ADA31547EB /* RevenueCat in Frameworks */ = {isa = PBXBuildFile; productRef = 0C96DCC77989483AA88F4922 /* RevenueCat */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -92,6 +93,7 @@
 			files = (
 				FA712FCA2F484EDCB48DDC13 /* FirebaseAnalytics in Frameworks */,
 				63191A0F1B384E17BCE808C4 /* FirebaseCrashlytics in Frameworks */,
+				6D98FA584D7C49ADA31547EB /* RevenueCat in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -264,6 +266,7 @@
 			packageProductDependencies = (
 				9862270174A949BE8CF7166E /* FirebaseAnalytics */,
 				D533391A5C4A445D9BE29FF3 /* FirebaseCrashlytics */,
+				0C96DCC77989483AA88F4922 /* RevenueCat */,
 			);
 			productName = TanCast;
 			productReference = CBF8BD1D38CF4833B2969372 /* TanCast.app */;
@@ -295,6 +298,7 @@
 			mainGroup = 66917F4CC4AD4349AF1A2AB7 /* TanCast */;
 			packageReferences = (
 				D5FC862297C144F6B2DD74A5 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
+				A64F2FC6546E443D88832D18 /* XCRemoteSwiftPackageReference "purchases-ios" */,
 			);
 			productRefGroup = 3244D68796B5454DA6E53DCF /* Products */;
 			projectDirPath = "";
@@ -499,6 +503,14 @@
 				minimumVersion = 11.0.0;
 			};
 		};
+		A64F2FC6546E443D88832D18 /* XCRemoteSwiftPackageReference "purchases-ios" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/RevenueCat/purchases-ios";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 5.0.0;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -511,6 +523,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = D5FC862297C144F6B2DD74A5 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
 			productName = FirebaseCrashlytics;
+		};
+		0C96DCC77989483AA88F4922 /* RevenueCat */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = A64F2FC6546E443D88832D18 /* XCRemoteSwiftPackageReference "purchases-ios" */;
+			productName = RevenueCat;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

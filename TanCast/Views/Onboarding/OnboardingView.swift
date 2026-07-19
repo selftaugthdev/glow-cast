@@ -50,12 +50,10 @@ struct OnboardingView: View {
             case .paywall:
                 PaywallView(
                     onSubscribe: {
-                        PremiumState.shared.unlock()
                         vm.completeOnboarding()
                         onComplete()
                     },
                     onRestore: {
-                        PremiumState.shared.unlock()
                         vm.completeOnboarding()
                         onComplete()
                     },

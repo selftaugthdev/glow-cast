@@ -21,6 +21,7 @@ while IFS='=' read -r key value; do
 done < "$ENV_FILE"
 
 : "${ANTHROPIC_API_KEY:?ANTHROPIC_API_KEY is not set in .env}"
+: "${REVENUECAT_API_KEY:?REVENUECAT_API_KEY is not set in .env}"
 
 mkdir -p "$(dirname "$OUT")"
 
@@ -28,7 +29,8 @@ cat > "$OUT" << SWIFT
 // AUTO-GENERATED — do not edit. Run scripts/generate_secrets.sh to regenerate.
 enum Secrets {
     static let anthropicAPIKey = "$ANTHROPIC_API_KEY"
+    static let revenueCatAPIKey = "$REVENUECAT_API_KEY"
 }
 SWIFT
 
-echo "Secrets.swift written to GlowCast/Config/"
+echo "Secrets.swift written to TanCast/Config/"

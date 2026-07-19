@@ -7,6 +7,7 @@ struct TanCastApp: App {
 
     init() {
         FirebaseApp.configure()
+        PremiumState.shared.configure()
     }
 
     var body: some Scene {

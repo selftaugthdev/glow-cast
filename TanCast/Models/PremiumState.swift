@@ -1,21 +1,54 @@
-import SwiftUI
+import Foundation
+import RevenueCat
 
-// TODO: SHIP BLOCKER — replace with RevenueCat before App Store submission.
-// unlock() is called directly by the paywall's Subscribe/Restore buttons with no
-// real purchase behind it, and the entitlement lives in UserDefaults. Submitting
-// this with real prices on the paywall is an App Review rejection.
-final class PremiumState: ObservableObject {
+final class PremiumState: NSObject, ObservableObject, PurchasesDelegate {
     static let shared = PremiumState()
 
-    @Published var isPremium: Bool {
-        didSet { UserDefaults.standard.set(isPremium, forKey: "isPremium") }
+    static let entitlementID = "PRO"
+
+    @Published private(set) var isPremium: Bool = false
+
+    private override init() {
+        super.init()
     }
 
-    private init() {
-        isPremium = UserDefaults.standard.bool(forKey: "isPremium")
+    func configure() {
+        Purchases.logLevel = .warn
+        Purchases.configure(withAPIKey: Secrets.revenueCatAPIKey)
+        Purchases.shared.delegate = self
+        Task { await refresh() }
     }
 
-    func unlock() {
-        isPremium = true
+    @MainActor
+    func refresh() async {
+        guard let info = try? await Purchases.shared.customerInfo() else { return }
+        apply(info)
+    }
+
+    func fetchOfferings() async throws -> Offering? {
+        try await Purchases.shared.offerings().current
+    }
+
+    @discardableResult
+    func purchase(package: Package) async throws -> CustomerInfo {
+        let result = try await Purchases.shared.purchase(package: package)
+        await apply(result.customerInfo)
+        return result.customerInfo
+    }
+
+    @discardableResult
+    func restore() async throws -> CustomerInfo {
+        let info = try await Purchases.shared.restorePurchases()
+        await apply(info)
+        return info
+    }
+
+    func purchases(_ purchases: Purchases, receivedUpdated customerInfo: CustomerInfo) {
+        Task { await apply(customerInfo) }
+    }
+
+    @MainActor
+    private func apply(_ info: CustomerInfo) {
+        isPremium = info.entitlements[Self.entitlementID]?.isActive == true
     }
 }
