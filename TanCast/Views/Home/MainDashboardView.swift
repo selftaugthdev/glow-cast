@@ -55,46 +55,61 @@ struct MainDashboardView: View {
 
                 Spacer().frame(height: 32)
 
-                // Sun Exposure Score (premium)
-                if premium.isPremium {
-                    SunExposureScoreCard(level: vm.exposureScore)
+                if vm.hasPhotosensitivity {
+                    PhotosensitivityProtectionCard()
                         .padding(.horizontal, 20)
-                }
 
-                // Exposure window card (premium)
-                if premium.isPremium {
-                    TanningWindowCard(forecast: vm.todayForecast, skinType: vm.skinType)
-                        .padding(.horizontal, 20)
-                }
+                    Spacer().frame(height: 16)
 
-                Spacer().frame(height: 16)
-
-                // Smart notifications card
-                SmartAlertsCard(isPremium: premium.isPremium, onUpgrade: onUpgrade)
-                    .padding(.horizontal, 20)
-
-                Spacer().frame(height: 16)
-
-                // Burn-risk limit + SPF row
-                HStack(spacing: 12) {
-                    if premium.isPremium {
-                        StatCard(
-                            icon: "timer",
-                            title: "Burn-Risk Limit",
-                            value: vm.currentUV < 3 ? "Low risk" : "\(vm.safeMinutes) min",
-                            color: .glowAmber
-                        )
-                    } else {
-                        LockedStatCard(icon: "timer", title: "Burn-Risk Limit")
-                    }
                     StatCard(
                         icon: "drop.fill",
                         title: "SPF Needed",
-                        value: vm.recommendedSPF == 0 ? "None" : "SPF \(vm.recommendedSPF)",
+                        value: "SPF 50+",
                         color: Color(red: 0.4, green: 0.8, blue: 1.0)
                     )
+                    .padding(.horizontal, 20)
+                } else {
+                    // Sun Exposure Score (premium)
+                    if premium.isPremium {
+                        SunExposureScoreCard(level: vm.exposureScore)
+                            .padding(.horizontal, 20)
+                    }
+
+                    // Exposure window card (premium)
+                    if premium.isPremium {
+                        TanningWindowCard(forecast: vm.todayForecast, skinType: vm.skinType)
+                            .padding(.horizontal, 20)
+                    }
+
+                    Spacer().frame(height: 16)
+
+                    // Smart notifications card
+                    SmartAlertsCard(isPremium: premium.isPremium, onUpgrade: onUpgrade)
+                        .padding(.horizontal, 20)
+
+                    Spacer().frame(height: 16)
+
+                    // Burn-risk limit + SPF row
+                    HStack(spacing: 12) {
+                        if premium.isPremium {
+                            StatCard(
+                                icon: "timer",
+                                title: "Burn-Risk Limit",
+                                value: vm.currentUV < 3 ? "Low risk" : "\(vm.safeMinutes) min",
+                                color: .glowAmber
+                            )
+                        } else {
+                            LockedStatCard(icon: "timer", title: "Burn-Risk Limit")
+                        }
+                        StatCard(
+                            icon: "drop.fill",
+                            title: "SPF Needed",
+                            value: vm.recommendedSPF == 0 ? "None" : "SPF \(vm.recommendedSPF)",
+                            color: Color(red: 0.4, green: 0.8, blue: 1.0)
+                        )
+                    }
+                    .padding(.horizontal, 20)
                 }
-                .padding(.horizontal, 20)
 
                 Spacer().frame(height: 16)
 
@@ -106,27 +121,30 @@ struct MainDashboardView: View {
 
                 Spacer().frame(height: 16)
 
-                // Start session CTA
-                if !vm.sessionActive && vm.currentUV >= 3 {
-                    Button {
-                        vm.startSession()
-                    } label: {
-                        Label("Start Exposure Timer", systemImage: "play.fill")
-                            .font(.system(size: 17, weight: .bold))
-                            .foregroundColor(.glowDark)
-                            .frame(maxWidth: .infinity)
-                            .padding(.vertical, 18)
-                            .background(Color.glowGold)
-                            .cornerRadius(16)
+                // Start session CTA — not shown for photosensitive users, since
+                // "safe exposure minutes" isn't a claim that applies to them.
+                if !vm.hasPhotosensitivity {
+                    if !vm.sessionActive && vm.currentUV >= 3 {
+                        Button {
+                            vm.startSession()
+                        } label: {
+                            Label("Start Exposure Timer", systemImage: "play.fill")
+                                .font(.system(size: 17, weight: .bold))
+                                .foregroundColor(.glowDark)
+                                .frame(maxWidth: .infinity)
+                                .padding(.vertical, 18)
+                                .background(Color.glowGold)
+                                .cornerRadius(16)
+                        }
+                        .padding(.horizontal, 20)
+                    } else if vm.sessionActive {
+                        ActiveSessionBanner(
+                            secondsRemaining: vm.sessionSecondsRemaining,
+                            totalSeconds: vm.sessionTotalSeconds,
+                            onStop: { vm.stopSession() }
+                        )
+                        .padding(.horizontal, 20)
                     }
-                    .padding(.horizontal, 20)
-                } else if vm.sessionActive {
-                    ActiveSessionBanner(
-                        secondsRemaining: vm.sessionSecondsRemaining,
-                        totalSeconds: vm.sessionTotalSeconds,
-                        onStop: { vm.stopSession() }
-                    )
-                    .padding(.horizontal, 20)
                 }
 
                 Spacer().frame(height: 120)
@@ -145,6 +163,33 @@ struct UVBadge: View {
             .padding(.vertical, 4)
             .background(Color.uvColor(for: uvIndex).opacity(0.7))
             .cornerRadius(8)
+    }
+}
+
+struct PhotosensitivityProtectionCard: View {
+    var body: some View {
+        VStack(alignment: .leading, spacing: 10) {
+            Label("Sun Protection Mode", systemImage: "shield.lefthalf.filled")
+                .font(.system(size: 13, weight: .semibold))
+                .foregroundColor(.glowAmber.opacity(0.9))
+
+            Text("Because of your sun allergy/photosensitivity, we don't show tanning windows or exposure timers — there's no reliable \"safe minutes\" number for this condition.")
+                .font(.system(size: 13))
+                .foregroundColor(.glowDarkText.opacity(0.7))
+
+            Text("Seek shade, wear protective clothing, and use high SPF. Talk to your dermatologist about what's safe for you.")
+                .font(.system(size: 13))
+                .foregroundColor(.glowDarkText.opacity(0.7))
+        }
+        .padding(20)
+        .background(
+            RoundedRectangle(cornerRadius: 16)
+                .fill(Color.glowAmber.opacity(0.08))
+                .overlay(
+                    RoundedRectangle(cornerRadius: 16)
+                        .stroke(Color.glowAmber.opacity(0.3), lineWidth: 1)
+                )
+        )
     }
 }
 

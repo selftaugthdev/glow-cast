@@ -2,6 +2,7 @@ import SwiftUI
 
 struct GoalSelectorView: View {
     @Binding var selectedGoal: TanGoal
+    @Binding var hasPhotosensitivity: Bool
     let onNext: () -> Void
     @State private var appeared = false
 
@@ -35,6 +36,12 @@ struct GoalSelectorView: View {
                 }
                 .padding(.horizontal, 24)
 
+                Spacer().frame(height: 20)
+
+                PhotosensitivityToggleCard(isOn: $hasPhotosensitivity)
+                    .padding(.horizontal, 24)
+                    .opacity(appeared ? 1 : 0)
+
                 Spacer()
 
                 Button(action: onNext) {
@@ -56,6 +63,41 @@ struct GoalSelectorView: View {
                 appeared = true
             }
         }
+    }
+}
+
+struct PhotosensitivityToggleCard: View {
+    @Binding var isOn: Bool
+
+    var body: some View {
+        VStack(alignment: .leading, spacing: 10) {
+            Toggle(isOn: $isOn.animation(.spring(response: 0.3))) {
+                HStack(spacing: 10) {
+                    Image(systemName: "exclamationmark.triangle.fill")
+                        .font(.system(size: 14))
+                        .foregroundColor(.glowAmber)
+                    Text("I have a sun allergy or photosensitivity condition")
+                        .font(.system(size: 14, weight: .semibold))
+                        .foregroundColor(.white.opacity(0.9))
+                }
+            }
+            .tint(.glowAmber)
+
+            if isOn {
+                Text("We'll turn off tanning recommendations and show protective guidance instead. This isn't medical advice — talk to your dermatologist.")
+                    .font(.system(size: 12))
+                    .foregroundColor(.white.opacity(0.55))
+            }
+        }
+        .padding(16)
+        .background(
+            RoundedRectangle(cornerRadius: 16)
+                .fill(Color.white.opacity(0.05))
+                .overlay(
+                    RoundedRectangle(cornerRadius: 16)
+                        .stroke(Color.white.opacity(0.1), lineWidth: 1)
+                )
+        )
     }
 }
 

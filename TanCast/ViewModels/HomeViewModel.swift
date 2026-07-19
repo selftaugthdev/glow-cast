@@ -40,6 +40,10 @@ final class HomeViewModel: ObservableObject {
         return TanGoal(rawValue: raw) ?? .gradualExposure
     }
 
+    var hasPhotosensitivity: Bool {
+        UserDefaults.standard.bool(forKey: "hasPhotosensitivity")
+    }
+
     var safeMinutes: Int {
         let base = skinType.safeExposureMinutes(uvIndex: currentUV)
         guard base > 0 else { return 0 }
@@ -102,7 +106,8 @@ final class HomeViewModel: ObservableObject {
 
         if PremiumState.shared.isPremium {
             NotificationService.shared.scheduleMorningForecast(
-                tomorrow: threeDayForecast.count > 1 ? threeDayForecast[1] : nil
+                tomorrow: threeDayForecast.count > 1 ? threeDayForecast[1] : nil,
+                hasPhotosensitivity: hasPhotosensitivity
             )
         }
     }
@@ -114,7 +119,7 @@ final class HomeViewModel: ObservableObject {
     }
 
     func startSession() {
-        guard !sessionActive, currentUV >= 3 else { return }
+        guard !sessionActive, !hasPhotosensitivity, currentUV >= 3 else { return }
         let seconds = safeMinutes * 60
         sessionTotalSeconds = seconds
         sessionSecondsRemaining = seconds

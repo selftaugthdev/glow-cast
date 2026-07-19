@@ -40,7 +40,7 @@ struct HomeView: View {
                         .tag(Tab.timer)
 
                     if premium.isPremium {
-                        SPFCalculatorView(skinType: vm.skinType, uvIndex: vm.currentUV)
+                        SPFCalculatorView(skinType: vm.skinType, uvIndex: vm.currentUV, hasPhotosensitivity: vm.hasPhotosensitivity)
                             .tag(Tab.spf)
                     } else {
                         LockedFeatureView(
@@ -52,7 +52,7 @@ struct HomeView: View {
                     }
 
                     if premium.isPremium {
-                        TripPlannerView(skinType: vm.skinType)
+                        TripPlannerView(skinType: vm.skinType, hasPhotosensitivity: vm.hasPhotosensitivity)
                             .tag(Tab.trip)
                     } else {
                         LockedFeatureView(

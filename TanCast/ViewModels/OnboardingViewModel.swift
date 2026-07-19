@@ -15,6 +15,7 @@ final class OnboardingViewModel: ObservableObject {
     @Published var currentStep: OnboardingStep = .hero
     @Published var skinType: FitzpatrickType = .typeII
     @Published var tanGoal: TanGoal = .gradualExposure
+    @Published var hasPhotosensitivity = false
     @Published var isScanning = false
     @Published var scanComplete = false
     @Published var scanError: String?
@@ -58,5 +59,6 @@ final class OnboardingViewModel: ObservableObject {
         UserDefaults.standard.set(true, forKey: "onboardingComplete")
         UserDefaults.standard.set(skinType.rawValue, forKey: "skinType")
         UserDefaults.standard.set(tanGoal.rawValue, forKey: "tanGoal")
+        UserDefaults.standard.set(hasPhotosensitivity, forKey: "hasPhotosensitivity")
     }
 }

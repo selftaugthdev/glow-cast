@@ -12,15 +12,20 @@ final class NotificationService {
 
     // One-shot 8 AM notification built from tomorrow's forecast, rescheduled on each
     // app open. A repeating trigger would replay stale forecast text indefinitely.
-    func scheduleMorningForecast(tomorrow: DailyForecast?) {
+    func scheduleMorningForecast(tomorrow: DailyForecast?, hasPhotosensitivity: Bool = false) {
         UNUserNotificationCenter.current().removePendingNotificationRequests(withIdentifiers: ["morning_forecast"])
         guard let tomorrow else { return }
 
-        var body = "UV stays low today — low burn risk ☁️"
-        if let window = tomorrow.tanningWindow {
-            let fmt = DateFormatter()
-            fmt.dateFormat = "h a"
-            body = "Today's exposure window: \(fmt.string(from: window.start))–\(fmt.string(from: window.end)) (UV \(Int(tomorrow.maxUV))) ☀️ Don't forget SPF"
+        var body: String
+        if hasPhotosensitivity {
+            body = "UV forecast for today: \(Int(tomorrow.maxUV)). Seek shade and wear high SPF 🧴"
+        } else {
+            body = "UV stays low today — low burn risk ☁️"
+            if let window = tomorrow.tanningWindow {
+                let fmt = DateFormatter()
+                fmt.dateFormat = "h a"
+                body = "Today's exposure window: \(fmt.string(from: window.start))–\(fmt.string(from: window.end)) (UV \(Int(tomorrow.maxUV))) ☀️ Don't forget SPF"
+            }
         }
 
         var comps = Calendar.current.dateComponents([.year, .month, .day], from: tomorrow.date)

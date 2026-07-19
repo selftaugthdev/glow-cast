@@ -31,7 +31,7 @@ struct OnboardingView: View {
                     ))
 
             case .goalSelector:
-                GoalSelectorView(selectedGoal: $vm.tanGoal) { vm.advance() }
+                GoalSelectorView(selectedGoal: $vm.tanGoal, hasPhotosensitivity: $vm.hasPhotosensitivity) { vm.advance() }
                     .transition(.asymmetric(
                         insertion: .move(edge: .trailing),
                         removal: .move(edge: .leading)

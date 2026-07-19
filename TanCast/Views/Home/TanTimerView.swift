@@ -16,7 +16,7 @@ struct TanTimerView: View {
                     .frame(maxWidth: .infinity, alignment: .leading)
                     .padding(.horizontal, 28)
 
-                Text("Burn-risk limit for your skin type")
+                Text(vm.hasPhotosensitivity ? "Sun protection mode" : "Burn-risk limit for your skin type")
                     .font(.system(size: 15))
                     .foregroundColor(.glowDarkText.opacity(0.55))
                     .frame(maxWidth: .infinity, alignment: .leading)
@@ -25,6 +25,21 @@ struct TanTimerView: View {
 
                 Spacer().frame(height: 48)
 
+                if vm.hasPhotosensitivity {
+                    PhotosensitivityProtectionCard()
+                        .padding(.horizontal, 28)
+
+                    Spacer().frame(height: 120)
+                } else {
+                    timerContent
+                }
+            }
+        }
+    }
+
+    @ViewBuilder
+    private var timerContent: some View {
+        Group {
                 // Ring timer
                 ZStack {
                     Circle()
@@ -157,7 +172,6 @@ struct TanTimerView: View {
                 .padding(.horizontal, 28)
 
                 Spacer().frame(height: 120)
-            }
         }
     }
 

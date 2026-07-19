@@ -4,6 +4,7 @@ struct TripPlannerView: View {
     @StateObject private var vm = TripPlannerViewModel()
     @EnvironmentObject private var premium: PremiumState
     let skinType: FitzpatrickType
+    var hasPhotosensitivity: Bool = false
 
     var body: some View {
         ScrollView(showsIndicators: false) {
@@ -34,7 +35,7 @@ struct TripPlannerView: View {
                 Spacer().frame(height: 28)
 
                 if let plan = vm.tripPlan {
-                    TripResultView(plan: plan, skinType: skinType)
+                    TripResultView(plan: plan, skinType: skinType, hasPhotosensitivity: hasPhotosensitivity)
                         .padding(.horizontal, 20)
                 } else {
                     TripInputView(vm: vm, skinType: skinType)
@@ -214,15 +215,20 @@ struct DatePickerCard: View {
 struct TripResultView: View {
     let plan: TripPlan
     let skinType: FitzpatrickType
+    var hasPhotosensitivity: Bool = false
 
     var body: some View {
         VStack(spacing: 16) {
             // Trip summary card
             TripSummaryCard(plan: plan)
 
+            if hasPhotosensitivity {
+                PhotosensitivityProtectionCard()
+            }
+
             // Per-day cards
             ForEach(plan.dailyForecasts) { day in
-                TripDayCard(day: day, skinType: skinType)
+                TripDayCard(day: day, skinType: skinType, hasPhotosensitivity: hasPhotosensitivity)
             }
         }
     }
@@ -298,6 +304,7 @@ struct TripStatItem: View {
 struct TripDayCard: View {
     let day: DailyForecast
     let skinType: FitzpatrickType
+    var hasPhotosensitivity: Bool = false
 
     private var burnLimit: Int {
         skinType.safeExposureMinutes(uvIndex: day.maxUV)
@@ -349,15 +356,21 @@ struct TripDayCard: View {
                 }
 
                 HStack(spacing: 16) {
-                    if let window = day.tanningWindow {
-                        Label("\(timeFormatter.string(from: window.start))–\(timeFormatter.string(from: window.end))", systemImage: "sun.and.horizon.fill")
+                    if hasPhotosensitivity {
+                        Label("Avoid direct sun", systemImage: "shield.lefthalf.filled")
                             .font(.system(size: 12))
                             .foregroundColor(.glowAmber.opacity(0.85))
-                    }
-                    if burnLimit > 0 {
-                        Label("\(burnLimit) min limit", systemImage: "timer")
-                            .font(.system(size: 12))
-                            .foregroundColor(.glowDarkText.opacity(0.6))
+                    } else {
+                        if let window = day.tanningWindow {
+                            Label("\(timeFormatter.string(from: window.start))–\(timeFormatter.string(from: window.end))", systemImage: "sun.and.horizon.fill")
+                                .font(.system(size: 12))
+                                .foregroundColor(.glowAmber.opacity(0.85))
+                        }
+                        if burnLimit > 0 {
+                            Label("\(burnLimit) min limit", systemImage: "timer")
+                                .font(.system(size: 12))
+                                .foregroundColor(.glowDarkText.opacity(0.6))
+                        }
                     }
                 }
             }

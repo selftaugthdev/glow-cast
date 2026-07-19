@@ -3,6 +3,7 @@ import SwiftUI
 struct SPFCalculatorView: View {
     let skinType: FitzpatrickType
     let uvIndex: Double
+    var hasPhotosensitivity: Bool = false
 
     @State private var activity: ActivityType = .outdoor
     @State private var reapplySecondsRemaining: Int = 0
@@ -40,6 +41,7 @@ struct SPFCalculatorView: View {
     }
 
     var recommendedSPF: Int {
+        guard !hasPhotosensitivity else { return 50 }
         let base = skinType.recommendedSPF(uvIndex: uvIndex)
         let adjusted = Double(base) * activity.multiplier
         let rounded = [0, 15, 30, 50].last(where: { Double($0) <= adjusted }) ?? 50
@@ -64,6 +66,22 @@ struct SPFCalculatorView: View {
                     .padding(.horizontal, 28)
 
                 Spacer().frame(height: 28)
+
+                if hasPhotosensitivity {
+                    HStack(spacing: 8) {
+                        Image(systemName: "shield.lefthalf.filled")
+                            .font(.system(size: 13))
+                            .foregroundColor(.glowAmber.opacity(0.8))
+                        Text("Sun protection mode: always maximum SPF, reapply often, seek shade.")
+                            .font(.system(size: 12))
+                            .foregroundColor(.glowDarkText.opacity(0.6))
+                    }
+                    .padding(12)
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                    .background(RoundedRectangle(cornerRadius: 12).fill(Color.glowAmber.opacity(0.08)))
+                    .padding(.horizontal, 20)
+                    .padding(.bottom, 16)
+                }
 
                 // SPF result
                 VStack(spacing: 8) {
