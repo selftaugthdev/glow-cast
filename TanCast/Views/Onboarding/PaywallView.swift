@@ -88,7 +88,7 @@ struct PaywallView: View {
 
                     // Benefits
                     VStack(spacing: 14) {
-                        BenefitRow(icon: "wand.and.stars", text: "AI skin type estimate")
+                        BenefitRow(icon: "airplane", text: "Trip Planner for any destination")
                         BenefitRow(icon: "sun.and.horizon.fill", text: "Personalized exposure windows")
                         BenefitRow(icon: "timer", text: "Burn-risk limit timer")
                         BenefitRow(icon: "drop.fill", text: "SPF reapplication reminders")
