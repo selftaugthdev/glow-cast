@@ -5,6 +5,8 @@ enum ScanError: Error {
     case imageConversionFailed
     case noFaceDetected
     case analysisFailed
+    case rateLimited
+    case invalidResponse
 }
 
 /// Estimates Fitzpatrick skin type entirely on-device: detects the face with

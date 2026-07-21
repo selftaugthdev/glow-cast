@@ -21,6 +21,7 @@ while IFS='=' read -r key value; do
 done < "$ENV_FILE"
 
 : "${REVENUECAT_API_KEY:?REVENUECAT_API_KEY is not set in .env}"
+: "${SKIN_SCAN_PROXY_TOKEN:?SKIN_SCAN_PROXY_TOKEN is not set in .env}"
 
 mkdir -p "$(dirname "$OUT")"
 
@@ -28,6 +29,7 @@ cat > "$OUT" << SWIFT
 // AUTO-GENERATED — do not edit. Run scripts/generate_secrets.sh to regenerate.
 enum Secrets {
     static let revenueCatAPIKey = "$REVENUECAT_API_KEY"
+    static let skinScanProxyToken = "$SKIN_SCAN_PROXY_TOKEN"
 }
 SWIFT
 

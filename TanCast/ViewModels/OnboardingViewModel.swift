@@ -21,7 +21,9 @@ final class OnboardingViewModel: ObservableObject {
     @Published var scanError: String?
     @Published var notificationsGranted = false
 
-    private let skinToneService = SkinToneService()
+    // TODO: swap back to SkinToneService (on-device Vision) once the pixel-sampling
+    // accuracy is verified against matched-lighting test photos — see commit history.
+    private let skinToneService = ClaudeVisionProxyService()
 
     var progress: Double {
         Double(currentStep.rawValue) / Double(OnboardingStep.allCases.count - 1)
