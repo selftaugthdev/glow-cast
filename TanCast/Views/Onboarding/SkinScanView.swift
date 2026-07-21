@@ -84,7 +84,7 @@ struct SkinScanView: View {
 
                 Spacer().frame(height: 24)
 
-                Text("Your photo is analyzed instantly and never stored.")
+                Text("Your photo is sent securely to analyze your skin type and isn't saved afterward.")
                     .font(.system(size: 13))
                     .foregroundColor(.white.opacity(0.4))
                     .multilineTextAlignment(.center)
