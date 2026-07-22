@@ -23,7 +23,7 @@ struct SettingsView: View {
                         if premium.isPremium {
                             Label("Active", systemImage: "checkmark.seal.fill")
                                 .font(.caption)
-                                .foregroundColor(.glowAmber)
+                                .foregroundColor(.orange)
                         }
                     }
 

@@ -244,7 +244,7 @@ struct ActivityChip: View {
                 Text(activity.rawValue)
                     .font(.system(size: 12, weight: .medium))
             }
-            .foregroundColor(isSelected ? .glowDark : .white.opacity(0.55))
+            .foregroundColor(isSelected ? .glowDark : .glowDarkText.opacity(0.6))
             .frame(maxWidth: .infinity)
             .padding(.vertical, 12)
             .background(

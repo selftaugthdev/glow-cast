@@ -164,7 +164,7 @@ struct TripInputView: View {
                 } else {
                     Label("Build My Trip Plan", systemImage: "airplane")
                         .font(.system(size: 17, weight: .bold))
-                        .foregroundColor(vm.canPlan ? .glowDark : .white.opacity(0.3))
+                        .foregroundColor(vm.canPlan ? .glowDark : .glowDarkText.opacity(0.45))
                         .frame(maxWidth: .infinity)
                         .padding(.vertical, 18)
                         .background(vm.canPlan ? Color.glowGold : Color.glowDarkText.opacity(0.07))

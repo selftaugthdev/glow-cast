@@ -112,10 +112,10 @@ struct LockedFeatureView: View {
             VStack(spacing: 8) {
                 Text(title)
                     .font(.system(size: 22, weight: .black))
-                    .foregroundColor(.white)
+                    .foregroundColor(.glowDarkText)
                 Text("Upgrade to TanCast Premium\nto unlock this feature.")
                     .font(.system(size: 15))
-                    .foregroundColor(.white.opacity(0.55))
+                    .foregroundColor(.glowDarkText.opacity(0.65))
                     .multilineTextAlignment(.center)
             }
 
