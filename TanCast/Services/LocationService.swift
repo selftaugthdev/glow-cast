@@ -52,10 +52,22 @@ extension LocationService: CLLocationManagerDelegate {
     }
 
     private func reverseGeocode(_ location: CLLocation) {
-        geocoder.reverseGeocodeLocation(location) { [weak self] placemarks, _ in
+        geocoder.reverseGeocodeLocation(location) { [weak self] placemarks, error in
             Task { @MainActor in
-                if let city = placemarks?.first?.locality {
-                    self?.locationName = city
+                guard let self else { return }
+                if let placemark = placemarks?.first {
+                    self.locationName = placemark.locality
+                        ?? placemark.subAdministrativeArea
+                        ?? placemark.administrativeArea
+                        ?? placemark.country
+                        ?? "Your Location"
+                } else {
+                    if let error {
+                        print("Reverse geocoding error: \(error.localizedDescription)")
+                    }
+                    // Never leave the UI stuck on the initial "Locating..." placeholder —
+                    // geocoding can fail or rate-limit independently of the location fix itself.
+                    self.locationName = "Your Location"
                 }
             }
         }
