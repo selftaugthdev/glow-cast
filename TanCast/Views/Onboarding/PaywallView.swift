@@ -203,12 +203,11 @@ struct PaywallView: View {
                         .padding(.top, 8)
 
                     // Required for auto-renewing subscriptions (App Review 3.1.2).
-                    // TODO: point Privacy Policy at the real hosted URL before submission.
                     HStack(spacing: 16) {
                         Link("Terms of Use",
                              destination: URL(string: "https://www.apple.com/legal/internet-services/itunes/dev/stdeula/")!)
                         Link("Privacy Policy",
-                             destination: URL(string: "https://tancast.app/privacy")!)
+                             destination: URL(string: "https://destiny-fender-4ad.notion.site/Privacy-Policy-TanCast-App-UV-Protection-3a477834762b80199fecefbafe4cbeef")!)
                     }
                     .font(.system(size: 11))
                     .foregroundColor(.white.opacity(0.35))
