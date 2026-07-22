@@ -258,7 +258,7 @@ struct TanningWindowCard: View {
                 .frame(maxWidth: .infinity, alignment: .leading)
                 .background(
                     RoundedRectangle(cornerRadius: 16)
-                        .fill(Color.glowDarkText.opacity(0.06))
+                        .fill(Color.glowDark.opacity(0.20))
                 )
             }
         }
@@ -298,7 +298,7 @@ struct StatCard: View {
         .frame(maxWidth: .infinity, alignment: .leading)
         .background(
             RoundedRectangle(cornerRadius: 16)
-                .fill(Color.glowDark.opacity(0.10))
+                .fill(Color.glowDark.opacity(0.20))
         )
     }
 }
@@ -318,7 +318,7 @@ struct ConditionsRow: View {
         .padding(.vertical, 14)
         .background(
             RoundedRectangle(cornerRadius: 16)
-                .fill(Color.glowDark.opacity(0.10))
+                .fill(Color.glowDark.opacity(0.20))
         )
     }
 
@@ -403,7 +403,7 @@ struct ActiveSessionBanner: View {
         .padding(20)
         .background(
             RoundedRectangle(cornerRadius: 16)
-                .fill(Color.glowDarkText.opacity(0.07))
+                .fill(Color.glowDark.opacity(0.20))
                 .overlay(
                     RoundedRectangle(cornerRadius: 16)
                         .stroke(Color.glowAmber.opacity(0.3), lineWidth: 1)
@@ -449,7 +449,7 @@ struct SunExposureScoreCard: View {
         .frame(maxWidth: .infinity, alignment: .leading)
         .background(
             RoundedRectangle(cornerRadius: 16)
-                .fill(Color.glowDark.opacity(0.10))
+                .fill(Color.glowDark.opacity(0.20))
                 .overlay(
                     RoundedRectangle(cornerRadius: 16)
                         .stroke(level.color.opacity(0.3), lineWidth: 1)
@@ -503,7 +503,7 @@ struct SmartAlertsCard: View {
         .padding(16)
         .background(
             RoundedRectangle(cornerRadius: 16)
-                .fill(Color.glowDark.opacity(0.10))
+                .fill(Color.glowDark.opacity(0.20))
         )
         .onTapGesture {
             if !isPremium { onUpgrade() }
@@ -538,7 +538,7 @@ struct LockedStatCard: View {
         .frame(maxWidth: .infinity, alignment: .leading)
         .background(
             RoundedRectangle(cornerRadius: 16)
-                .fill(Color.glowDark.opacity(0.08))
+                .fill(Color.glowDark.opacity(0.16))
                 .overlay(
                     RoundedRectangle(cornerRadius: 16)
                         .stroke(Color.glowGold.opacity(0.2), lineWidth: 1)
