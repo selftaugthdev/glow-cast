@@ -333,8 +333,8 @@ struct TripDayCard: View {
                     .font(.system(size: 22, weight: .black))
                     .foregroundColor(.glowDarkText)
                 Text(day.date, formatter: monthFormatter)
-                    .font(.system(size: 11))
-                    .foregroundColor(.glowDarkText.opacity(0.45))
+                    .font(.system(size: 11, weight: .semibold))
+                    .foregroundColor(.glowDark.opacity(0.6))
             }
             .frame(width: 44)
 
@@ -347,8 +347,8 @@ struct TripDayCard: View {
                         .font(.system(size: 16, weight: .black))
                         .foregroundColor(Color.uvColor(for: day.maxUV))
                     Text(UVCategory(uvIndex: day.maxUV).label)
-                        .font(.system(size: 11, weight: .semibold))
-                        .foregroundColor(.glowDarkText.opacity(0.6))
+                        .font(.system(size: 11, weight: .bold))
+                        .foregroundColor(.glowDark.opacity(0.85))
                         .padding(.horizontal, 8)
                         .padding(.vertical, 3)
                         .background(Color.uvColor(for: day.maxUV).opacity(0.15))
@@ -363,13 +363,13 @@ struct TripDayCard: View {
                     } else {
                         if let window = day.tanningWindow {
                             Label("\(timeFormatter.string(from: window.start))–\(timeFormatter.string(from: window.end))", systemImage: "sun.and.horizon.fill")
-                                .font(.system(size: 12))
-                                .foregroundColor(.glowAmber.opacity(0.85))
+                                .font(.system(size: 12, weight: .semibold))
+                                .foregroundColor(.glowDark.opacity(0.8))
                         }
                         if burnLimit > 0 {
                             Label("\(burnLimit) min limit", systemImage: "timer")
-                                .font(.system(size: 12))
-                                .foregroundColor(.glowDarkText.opacity(0.6))
+                                .font(.system(size: 12, weight: .semibold))
+                                .foregroundColor(.glowDark.opacity(0.8))
                         }
                     }
                 }
@@ -381,16 +381,16 @@ struct TripDayCard: View {
             VStack(spacing: 2) {
                 Image(systemName: day.averageCloudCover > 50 ? "cloud.fill" : "sun.max.fill")
                     .font(.system(size: 16))
-                    .foregroundColor(.glowDarkText.opacity(0.45))
+                    .foregroundColor(.glowDark.opacity(0.6))
                 Text("\(day.averageCloudCover)%")
-                    .font(.system(size: 11))
-                    .foregroundColor(.glowDarkText.opacity(0.35))
+                    .font(.system(size: 11, weight: .semibold))
+                    .foregroundColor(.glowDark.opacity(0.6))
             }
         }
         .padding(16)
         .background(
             RoundedRectangle(cornerRadius: 16)
-                .fill(Color.glowDarkText.opacity(0.05))
+                .fill(Color.glowDark.opacity(0.09))
                 .overlay(RoundedRectangle(cornerRadius: 16).stroke(Color.uvColor(for: day.maxUV).opacity(0.2), lineWidth: 1))
         )
     }
