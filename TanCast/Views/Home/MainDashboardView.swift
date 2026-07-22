@@ -17,7 +17,7 @@ struct MainDashboardView: View {
                             .foregroundColor(.glowDarkText.opacity(0.75))
                         Text(Date(), format: .dateTime.weekday(.wide).month().day())
                             .font(.system(size: 13))
-                            .foregroundColor(.glowDarkText.opacity(0.45))
+                            .foregroundColor(.glowDarkText.opacity(0.6))
                     }
                     Spacer()
                 }
@@ -236,10 +236,10 @@ struct TanningWindowCard: View {
             } else {
                 HStack {
                     Image(systemName: "cloud.fill")
-                        .foregroundColor(.glowDarkText.opacity(0.4))
+                        .foregroundColor(.glowDarkText.opacity(0.6))
                     Text("No low-risk exposure window today")
                         .font(.system(size: 15))
-                        .foregroundColor(.glowDarkText.opacity(0.5))
+                        .foregroundColor(.glowDarkText.opacity(0.65))
                 }
                 .padding(20)
                 .frame(maxWidth: .infinity, alignment: .leading)
@@ -275,7 +275,7 @@ struct StatCard: View {
                     .foregroundColor(color)
                 Text(title)
                     .font(.system(size: 12, weight: .medium))
-                    .foregroundColor(.glowDarkText.opacity(0.55))
+                    .foregroundColor(.glowDarkText.opacity(0.75))
             }
             Text(value)
                 .font(.system(size: 20, weight: .black))
@@ -331,7 +331,7 @@ struct ConditionItem: View {
                 .foregroundColor(.glowDarkText)
             Text(label)
                 .font(.system(size: 11))
-                .foregroundColor(.glowDarkText.opacity(0.45))
+                .foregroundColor(.glowDarkText.opacity(0.65))
         }
         .frame(maxWidth: .infinity)
     }
@@ -417,7 +417,7 @@ struct SunExposureScoreCard: View {
                 HStack(spacing: 8) {
                     Text("Exposure Score")
                         .font(.system(size: 12, weight: .medium))
-                        .foregroundColor(.glowDarkText.opacity(0.55))
+                        .foregroundColor(.glowDarkText.opacity(0.75))
                     Text(level.rawValue)
                         .font(.system(size: 13, weight: .bold))
                         .foregroundColor(level.color)
@@ -468,7 +468,7 @@ struct SmartAlertsCard: View {
                      ? "Daily forecast alert active · 8:00 AM"
                      : "Unlock personalized forecast & burn alerts")
                     .font(.system(size: 12))
-                    .foregroundColor(.glowDarkText.opacity(0.55))
+                    .foregroundColor(.glowDarkText.opacity(0.7))
             }
 
             Spacer()
@@ -507,10 +507,10 @@ struct LockedStatCard: View {
             HStack {
                 Image(systemName: icon)
                     .font(.system(size: 14))
-                    .foregroundColor(.glowDarkText.opacity(0.25))
+                    .foregroundColor(.glowDarkText.opacity(0.45))
                 Text(title)
                     .font(.system(size: 12, weight: .medium))
-                    .foregroundColor(.glowDarkText.opacity(0.25))
+                    .foregroundColor(.glowDarkText.opacity(0.5))
             }
             HStack(spacing: 6) {
                 Image(systemName: "lock.fill")
