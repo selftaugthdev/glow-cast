@@ -29,6 +29,19 @@ final class HomeViewModel: ObservableObject {
 
     let locationService = LocationService()
     let uvService = UVService()
+    private var cancellables = Set<AnyCancellable>()
+
+    init() {
+        // locationName must stay live-synced, not a one-time snapshot: the GPS
+        // coordinate (locationService.location) typically arrives before reverse
+        // geocoding (a separate network call) finishes resolving a place name.
+        locationService.$locationName
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] name in
+                self?.locationName = name
+            }
+            .store(in: &cancellables)
+    }
 
     var skinType: FitzpatrickType {
         let raw = UserDefaults.standard.string(forKey: "skinType") ?? "II"
@@ -109,7 +122,6 @@ final class HomeViewModel: ObservableObject {
            locationService.authorizationStatus == .restricted {
             loadError = .locationDenied
         } else if let loc = locationService.location {
-            locationName = locationService.locationName
             await uvService.fetch(for: loc)
             if uvService.todayForecast == nil {
                 loadError = .fetchFailed
