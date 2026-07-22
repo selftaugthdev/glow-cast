@@ -90,22 +90,22 @@ struct SPFCalculatorView: View {
                             .font(.system(size: 26, weight: .black))
                             .foregroundColor(.uvLow)
                         Text("UV is low, enjoy safely")
-                            .font(.system(size: 14))
-                            .foregroundColor(.glowDarkText.opacity(0.55))
+                            .font(.system(size: 14, weight: .medium))
+                            .foregroundColor(.white.opacity(0.65))
                     } else {
                         Text("SPF \(recommendedSPF)")
                             .font(.system(size: 72, weight: .black, design: .rounded))
                             .foregroundColor(.glowGold)
                         Text("recommended for \(skinType.displayName) • \(activity.rawValue)")
-                            .font(.system(size: 14))
-                            .foregroundColor(.glowDarkText.opacity(0.55))
+                            .font(.system(size: 14, weight: .medium))
+                            .foregroundColor(.white.opacity(0.65))
                     }
                 }
                 .padding(32)
                 .frame(maxWidth: .infinity)
                 .background(
                     RoundedRectangle(cornerRadius: 24)
-                        .fill(Color.glowDarkText.opacity(0.07))
+                        .fill(Color.glowDark.opacity(0.90))
                 )
                 .padding(.horizontal, 20)
 
@@ -137,17 +137,17 @@ struct SPFCalculatorView: View {
                     VStack(alignment: .leading, spacing: 2) {
                         Text(skinType.displayName)
                             .font(.system(size: 16, weight: .bold))
-                            .foregroundColor(.glowDarkText)
+                            .foregroundColor(.white)
                         Text(skinType.description)
-                            .font(.system(size: 12))
-                            .foregroundColor(.glowDarkText.opacity(0.5))
+                            .font(.system(size: 12, weight: .medium))
+                            .foregroundColor(.white.opacity(0.6))
                     }
                     Spacer()
                 }
                 .padding(16)
                 .background(
                     RoundedRectangle(cornerRadius: 14)
-                        .fill(Color.glowDarkText.opacity(0.06))
+                        .fill(Color.glowDark.opacity(0.90))
                 )
                 .padding(.horizontal, 20)
 
@@ -164,11 +164,11 @@ struct SPFCalculatorView: View {
                                 if reapplyTimerActive {
                                     Text("Reapply in \(reapplyTimeString) 🧴")
                                         .font(.system(size: 20, weight: .black))
-                                        .foregroundColor(.glowDarkText)
+                                        .foregroundColor(.white)
                                 } else {
                                     Text("Every \(activity.reapplyMinutes) min")
-                                        .font(.system(size: 16))
-                                        .foregroundColor(.glowDarkText.opacity(0.6))
+                                        .font(.system(size: 16, weight: .medium))
+                                        .foregroundColor(.white.opacity(0.65))
                                 }
                             }
                             Spacer()
@@ -178,7 +178,7 @@ struct SPFCalculatorView: View {
                                 } label: {
                                     Image(systemName: "xmark.circle.fill")
                                         .font(.system(size: 24))
-                                        .foregroundColor(.glowDarkText.opacity(0.4))
+                                        .foregroundColor(.white.opacity(0.5))
                                 }
                             }
                         }
@@ -200,7 +200,7 @@ struct SPFCalculatorView: View {
                     .padding(20)
                     .background(
                         RoundedRectangle(cornerRadius: 16)
-                            .fill(Color.glowDarkText.opacity(0.06))
+                            .fill(Color.glowDark.opacity(0.90))
                     )
                     .padding(.horizontal, 20)
                 }
@@ -244,12 +244,12 @@ struct ActivityChip: View {
                 Text(activity.rawValue)
                     .font(.system(size: 12, weight: .medium))
             }
-            .foregroundColor(isSelected ? .glowDark : .glowDarkText.opacity(0.6))
+            .foregroundColor(isSelected ? .glowDark : .white.opacity(0.55))
             .frame(maxWidth: .infinity)
             .padding(.vertical, 12)
             .background(
                 RoundedRectangle(cornerRadius: 12)
-                    .fill(isSelected ? Color.glowAmber : Color.glowDarkText.opacity(0.07))
+                    .fill(isSelected ? Color.glowAmber : Color.glowDark.opacity(0.75))
             )
         }
     }

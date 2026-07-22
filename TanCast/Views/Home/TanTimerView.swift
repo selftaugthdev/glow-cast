@@ -201,13 +201,13 @@ struct SessionHistorySection: View {
             if isPremium {
                 if sessions.isEmpty {
                     Text("Your completed sessions will show up here.")
-                        .font(.system(size: 13))
-                        .foregroundColor(.glowDarkText.opacity(0.45))
+                        .font(.system(size: 13, weight: .medium))
+                        .foregroundColor(.white.opacity(0.6))
                         .frame(maxWidth: .infinity, alignment: .leading)
                         .padding(16)
                         .background(
                             RoundedRectangle(cornerRadius: 16)
-                                .fill(Color.glowDarkText.opacity(0.05))
+                                .fill(Color.glowDark.opacity(0.90))
                         )
                 } else {
                     VStack(spacing: 10) {
@@ -230,17 +230,17 @@ struct SessionHistorySection: View {
                         VStack(alignment: .leading, spacing: 2) {
                             Text("Track your sessions")
                                 .font(.system(size: 14, weight: .bold))
-                                .foregroundColor(.glowDarkText)
+                                .foregroundColor(.white)
                             Text("Unlock Premium to save your exposure history")
-                                .font(.system(size: 12))
-                                .foregroundColor(.glowDarkText.opacity(0.55))
+                                .font(.system(size: 12, weight: .medium))
+                                .foregroundColor(.white.opacity(0.6))
                         }
                         Spacer()
                     }
                     .padding(16)
                     .background(
                         RoundedRectangle(cornerRadius: 16)
-                            .fill(Color.glowDarkText.opacity(0.05))
+                            .fill(Color.glowDark.opacity(0.90))
                     )
                 }
             }
@@ -271,10 +271,10 @@ struct SessionHistoryRow: View {
             VStack(alignment: .leading, spacing: 2) {
                 Text(dateFormatter.string(from: session.startTime))
                     .font(.system(size: 13, weight: .semibold))
-                    .foregroundColor(.glowDarkText)
+                    .foregroundColor(.white)
                 Text("UV \(String(format: "%.0f", session.uvIndex)) · \(session.skinType.displayName)")
-                    .font(.system(size: 11))
-                    .foregroundColor(.glowDarkText.opacity(0.5))
+                    .font(.system(size: 11, weight: .medium))
+                    .foregroundColor(.white.opacity(0.6))
             }
 
             Spacer()
@@ -286,7 +286,7 @@ struct SessionHistoryRow: View {
         .padding(14)
         .background(
             RoundedRectangle(cornerRadius: 14)
-                .fill(Color.glowDarkText.opacity(0.05))
+                .fill(Color.glowDark.opacity(0.90))
         )
     }
 }

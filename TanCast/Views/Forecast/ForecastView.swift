@@ -32,7 +32,7 @@ struct ForecastView: View {
                     .padding(.vertical, 20)
                     .background(
                         RoundedRectangle(cornerRadius: 20)
-                            .fill(Color.glowDarkText.opacity(0.06))
+                            .fill(Color.glowDark.opacity(0.90))
                     )
                     .padding(.horizontal, 20)
                 }
@@ -91,7 +91,7 @@ struct UVBarChart: View {
                         if entry.hour % 3 == 0 {
                             Text("\(entry.hour)")
                                 .font(.system(size: 9))
-                                .foregroundColor(.glowDarkText.opacity(0.4))
+                                .foregroundColor(.white.opacity(0.5))
                         } else {
                             Text("").font(.system(size: 9))
                         }
@@ -120,7 +120,7 @@ struct DayForecastRow: View {
         HStack {
             Text(day.dayName)
                 .font(.system(size: 16, weight: .semibold))
-                .foregroundColor(.glowDarkText)
+                .foregroundColor(.white)
                 .frame(width: 44, alignment: .leading)
 
             Spacer()
@@ -145,7 +145,7 @@ struct DayForecastRow: View {
         .padding(.vertical, 14)
         .background(
             RoundedRectangle(cornerRadius: 14)
-                .fill(Color.glowDarkText.opacity(0.05))
+                .fill(Color.glowDark.opacity(0.90))
         )
     }
 
@@ -161,7 +161,7 @@ struct UVMiniBar: View {
     var body: some View {
         ZStack(alignment: .leading) {
             RoundedRectangle(cornerRadius: 3)
-                .fill(Color.glowDarkText.opacity(0.08))
+                .fill(Color.white.opacity(0.15))
                 .frame(width: 80, height: 8)
             RoundedRectangle(cornerRadius: 3)
                 .fill(Color.uvColor(for: uvIndex))

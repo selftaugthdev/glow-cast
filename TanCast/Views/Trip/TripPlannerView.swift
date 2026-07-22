@@ -139,10 +139,10 @@ struct TripInputView: View {
                             .foregroundColor(.glowAmber.opacity(0.7))
                         Text("Forecasts are available up to 16 days ahead. Showing first 16 days.")
                             .font(.system(size: 12, weight: .medium))
-                            .foregroundColor(.glowDark.opacity(0.7))
+                            .foregroundColor(.white.opacity(0.7))
                     }
                     .padding(12)
-                    .background(RoundedRectangle(cornerRadius: 10).fill(Color.glowDark.opacity(0.20)))
+                    .background(RoundedRectangle(cornerRadius: 10).fill(Color.glowDark.opacity(0.90)))
                 }
             }
 
@@ -192,7 +192,7 @@ struct DatePickerCard: View {
         VStack(alignment: .leading, spacing: 6) {
             Text(label)
                 .font(.system(size: 11, weight: .semibold))
-                .foregroundColor(.glowDark.opacity(0.65))
+                .foregroundColor(.white.opacity(0.6))
                 .textCase(.uppercase)
             DatePicker("", selection: $date, in: range, displayedComponents: .date)
                 .datePickerStyle(.compact)
@@ -204,8 +204,7 @@ struct DatePickerCard: View {
         .frame(maxWidth: .infinity, alignment: .leading)
         .background(
             RoundedRectangle(cornerRadius: 14)
-                .fill(Color.glowDark.opacity(0.20))
-                .overlay(RoundedRectangle(cornerRadius: 14).stroke(Color.glowDarkText.opacity(0.12), lineWidth: 1))
+                .fill(Color.glowDark.opacity(0.90))
         )
     }
 }
@@ -328,17 +327,17 @@ struct TripDayCard: View {
             VStack(spacing: 4) {
                 Text(day.date, formatter: weekdayFormatter)
                     .font(.system(size: 13, weight: .bold))
-                    .foregroundColor(.glowDarkText)
+                    .foregroundColor(.white)
                 Text(day.date, formatter: dayFormatter)
                     .font(.system(size: 22, weight: .black))
-                    .foregroundColor(.glowDarkText)
+                    .foregroundColor(.white)
                 Text(day.date, formatter: monthFormatter)
                     .font(.system(size: 11, weight: .semibold))
-                    .foregroundColor(.glowDark.opacity(0.6))
+                    .foregroundColor(.white.opacity(0.55))
             }
             .frame(width: 44)
 
-            Divider().frame(height: 60).background(Color.glowDarkText.opacity(0.1))
+            Divider().frame(height: 60).background(Color.white.opacity(0.15))
 
             // UV + exposure info
             VStack(alignment: .leading, spacing: 8) {
@@ -364,12 +363,12 @@ struct TripDayCard: View {
                         if let window = day.tanningWindow {
                             Label("\(timeFormatter.string(from: window.start))–\(timeFormatter.string(from: window.end))", systemImage: "sun.and.horizon.fill")
                                 .font(.system(size: 12, weight: .semibold))
-                                .foregroundColor(.glowDark.opacity(0.8))
+                                .foregroundColor(.white.opacity(0.75))
                         }
                         if burnLimit > 0 {
                             Label("\(burnLimit) min limit", systemImage: "timer")
                                 .font(.system(size: 12, weight: .semibold))
-                                .foregroundColor(.glowDark.opacity(0.8))
+                                .foregroundColor(.white.opacity(0.75))
                         }
                     }
                 }
@@ -381,16 +380,16 @@ struct TripDayCard: View {
             VStack(spacing: 2) {
                 Image(systemName: day.averageCloudCover > 50 ? "cloud.fill" : "sun.max.fill")
                     .font(.system(size: 16))
-                    .foregroundColor(.glowDark.opacity(0.6))
+                    .foregroundColor(.white.opacity(0.6))
                 Text("\(day.averageCloudCover)%")
                     .font(.system(size: 11, weight: .semibold))
-                    .foregroundColor(.glowDark.opacity(0.6))
+                    .foregroundColor(.white.opacity(0.6))
             }
         }
         .padding(16)
         .background(
             RoundedRectangle(cornerRadius: 16)
-                .fill(Color.glowDark.opacity(0.20))
+                .fill(Color.glowDark.opacity(0.90))
                 .overlay(RoundedRectangle(cornerRadius: 16).stroke(Color.uvColor(for: day.maxUV).opacity(0.2), lineWidth: 1))
         )
     }
