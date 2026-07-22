@@ -27,17 +27,20 @@ extension Color {
     }
 
     static func backgroundGradient(for uvIndex: Double) -> [Color] {
+        // EXPERIMENTAL: each stop lightened 50% toward white (testing whether a
+        // lighter background reads better than darkening text further). Original
+        // values are in git history — see the commit that introduced this comment.
         switch uvIndex {
         case ..<2:
-            return [Color(red: 0.53, green: 0.65, blue: 0.83), Color(red: 0.36, green: 0.44, blue: 0.60)]
+            return [Color(red: 0.765, green: 0.825, blue: 0.915), Color(red: 0.68, green: 0.72, blue: 0.80)]
         case 2..<4:
-            return [Color(red: 1.0, green: 0.85, blue: 0.55), Color(red: 0.95, green: 0.70, blue: 0.30)]
+            return [Color(red: 1.0, green: 0.925, blue: 0.775), Color(red: 0.975, green: 0.85, blue: 0.65)]
         case 4..<7:
-            return [Color(red: 1.0, green: 0.72, blue: 0.20), Color(red: 0.95, green: 0.50, blue: 0.15)]
+            return [Color(red: 1.0, green: 0.86, blue: 0.60), Color(red: 0.975, green: 0.75, blue: 0.575)]
         case 7..<10:
-            return [Color(red: 1.0, green: 0.55, blue: 0.20), Color(red: 0.90, green: 0.30, blue: 0.10)]
+            return [Color(red: 1.0, green: 0.775, blue: 0.60), Color(red: 0.95, green: 0.65, blue: 0.55)]
         default:
-            return [Color(red: 0.85, green: 0.20, blue: 0.10), Color(red: 0.55, green: 0.10, blue: 0.05)]
+            return [Color(red: 0.925, green: 0.60, blue: 0.55), Color(red: 0.775, green: 0.55, blue: 0.525)]
         }
     }
 
