@@ -249,16 +249,16 @@ struct TanningWindowCard: View {
             } else {
                 HStack {
                     Image(systemName: "cloud.fill")
-                        .foregroundColor(.glowDark.opacity(0.7))
+                        .foregroundColor(.white.opacity(0.6))
                     Text("No low-risk exposure window today")
                         .font(.system(size: 15, weight: .medium))
-                        .foregroundColor(.glowDark.opacity(0.8))
+                        .foregroundColor(.white.opacity(0.7))
                 }
                 .padding(20)
                 .frame(maxWidth: .infinity, alignment: .leading)
                 .background(
                     RoundedRectangle(cornerRadius: 16)
-                        .fill(Color.glowDark.opacity(0.20))
+                        .fill(Color.glowDark.opacity(0.90))
                 )
             }
         }
@@ -288,17 +288,17 @@ struct StatCard: View {
                     .foregroundColor(color)
                 Text(title)
                     .font(.system(size: 12, weight: .bold))
-                    .foregroundColor(.glowDark.opacity(0.85))
+                    .foregroundColor(.white.opacity(0.7))
             }
             Text(value)
                 .font(.system(size: 20, weight: .black))
-                .foregroundColor(.glowDarkText)
+                .foregroundColor(.white)
         }
         .padding(16)
         .frame(maxWidth: .infinity, alignment: .leading)
         .background(
             RoundedRectangle(cornerRadius: 16)
-                .fill(Color.glowDark.opacity(0.20))
+                .fill(Color.glowDark.opacity(0.90))
         )
     }
 }
@@ -310,15 +310,15 @@ struct ConditionsRow: View {
     var body: some View {
         HStack(spacing: 0) {
             ConditionItem(icon: "cloud.fill", label: "Clouds", value: "\(forecast.averageCloudCover)%")
-            Divider().frame(height: 30).background(Color.glowDarkText.opacity(0.15))
+            Divider().frame(height: 30).background(Color.white.opacity(0.15))
             ConditionItem(icon: "arrow.up.circle.fill", label: "Peak UV", value: String(format: "%.0f", forecast.maxUV))
-            Divider().frame(height: 30).background(Color.glowDarkText.opacity(0.15))
+            Divider().frame(height: 30).background(Color.white.opacity(0.15))
             ConditionItem(icon: "sunset.fill", label: "Sunset", value: timeString(forecast.sunset))
         }
         .padding(.vertical, 14)
         .background(
             RoundedRectangle(cornerRadius: 16)
-                .fill(Color.glowDark.opacity(0.20))
+                .fill(Color.glowDark.opacity(0.90))
         )
     }
 
@@ -341,10 +341,10 @@ struct ConditionItem: View {
                 .foregroundColor(.glowAmber.opacity(0.75))
             Text(value)
                 .font(.system(size: 15, weight: .bold))
-                .foregroundColor(.glowDarkText)
+                .foregroundColor(.white)
             Text(label)
                 .font(.system(size: 11, weight: .bold))
-                .foregroundColor(.glowDark.opacity(0.85))
+                .foregroundColor(.white.opacity(0.6))
         }
         .frame(maxWidth: .infinity)
     }
@@ -375,7 +375,7 @@ struct ActiveSessionBanner: View {
                         .foregroundColor(.glowAmber)
                     Text("\(timeString) remaining")
                         .font(.system(size: 24, weight: .black))
-                        .foregroundColor(.glowDarkText)
+                        .foregroundColor(.white)
                 }
                 Spacer()
                 Button(action: onStop) {
@@ -390,7 +390,7 @@ struct ActiveSessionBanner: View {
             GeometryReader { geo in
                 ZStack(alignment: .leading) {
                     RoundedRectangle(cornerRadius: 4)
-                        .fill(Color.glowDarkText.opacity(0.1))
+                        .fill(Color.white.opacity(0.15))
                         .frame(height: 6)
                     RoundedRectangle(cornerRadius: 4)
                         .fill(Color.glowAmber)
@@ -403,7 +403,7 @@ struct ActiveSessionBanner: View {
         .padding(20)
         .background(
             RoundedRectangle(cornerRadius: 16)
-                .fill(Color.glowDark.opacity(0.20))
+                .fill(Color.glowDark.opacity(0.90))
                 .overlay(
                     RoundedRectangle(cornerRadius: 16)
                         .stroke(Color.glowAmber.opacity(0.3), lineWidth: 1)
@@ -430,7 +430,7 @@ struct SunExposureScoreCard: View {
                 HStack(spacing: 8) {
                     Text("Exposure Score")
                         .font(.system(size: 12, weight: .bold))
-                        .foregroundColor(.glowDark.opacity(0.85))
+                        .foregroundColor(.white.opacity(0.7))
                     Text(level.rawValue)
                         .font(.system(size: 13, weight: .bold))
                         .foregroundColor(level.color)
@@ -441,7 +441,7 @@ struct SunExposureScoreCard: View {
                 }
                 Text(level.advice)
                     .font(.system(size: 13, weight: .medium))
-                    .foregroundColor(.glowDark.opacity(0.8))
+                    .foregroundColor(.white.opacity(0.75))
                     .lineLimit(2)
             }
         }
@@ -449,7 +449,7 @@ struct SunExposureScoreCard: View {
         .frame(maxWidth: .infinity, alignment: .leading)
         .background(
             RoundedRectangle(cornerRadius: 16)
-                .fill(Color.glowDark.opacity(0.20))
+                .fill(Color.glowDark.opacity(0.90))
                 .overlay(
                     RoundedRectangle(cornerRadius: 16)
                         .stroke(level.color.opacity(0.3), lineWidth: 1)
@@ -476,12 +476,12 @@ struct SmartAlertsCard: View {
             VStack(alignment: .leading, spacing: 2) {
                 Text("Smart Notifications")
                     .font(.system(size: 14, weight: .bold))
-                    .foregroundColor(.glowDarkText)
+                    .foregroundColor(.white)
                 Text(isPremium
                      ? "Daily forecast alert active · 8:00 AM"
                      : "Unlock personalized forecast & burn alerts")
                     .font(.system(size: 12, weight: .medium))
-                    .foregroundColor(.glowDark.opacity(0.8))
+                    .foregroundColor(.white.opacity(0.65))
             }
 
             Spacer()
@@ -503,7 +503,7 @@ struct SmartAlertsCard: View {
         .padding(16)
         .background(
             RoundedRectangle(cornerRadius: 16)
-                .fill(Color.glowDark.opacity(0.20))
+                .fill(Color.glowDark.opacity(0.90))
         )
         .onTapGesture {
             if !isPremium { onUpgrade() }
@@ -520,10 +520,10 @@ struct LockedStatCard: View {
             HStack {
                 Image(systemName: icon)
                     .font(.system(size: 14))
-                    .foregroundColor(.glowDark.opacity(0.6))
+                    .foregroundColor(.white.opacity(0.4))
                 Text(title)
                     .font(.system(size: 12, weight: .bold))
-                    .foregroundColor(.glowDark.opacity(0.65))
+                    .foregroundColor(.white.opacity(0.45))
             }
             HStack(spacing: 6) {
                 Image(systemName: "lock.fill")
@@ -538,7 +538,7 @@ struct LockedStatCard: View {
         .frame(maxWidth: .infinity, alignment: .leading)
         .background(
             RoundedRectangle(cornerRadius: 16)
-                .fill(Color.glowDark.opacity(0.16))
+                .fill(Color.glowDark.opacity(0.75))
                 .overlay(
                     RoundedRectangle(cornerRadius: 16)
                         .stroke(Color.glowGold.opacity(0.2), lineWidth: 1)
