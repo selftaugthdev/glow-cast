@@ -47,6 +47,16 @@ final class PremiumState: NSObject, ObservableObject, PurchasesDelegate {
         Task { await apply(customerInfo) }
     }
 
+    #if DEBUG
+    /// Screenshot/testing only — compiled out of Release builds entirely, so this
+    /// can never ship to TestFlight or the App Store. Overrides the RevenueCat-
+    /// derived entitlement locally without touching real purchase state.
+    @MainActor
+    func debugSetPremium(_ value: Bool) {
+        isPremium = value
+    }
+    #endif
+
     @MainActor
     private func apply(_ info: CustomerInfo) {
         isPremium = info.entitlements[Self.entitlementID]?.isActive == true

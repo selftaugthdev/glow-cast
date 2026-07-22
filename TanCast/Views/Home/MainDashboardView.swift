@@ -5,6 +5,7 @@ struct MainDashboardView: View {
     @EnvironmentObject private var premium: PremiumState
     var onUpgrade: () -> Void = {}
     @State private var sunPulse: CGFloat = 1.0
+    @State private var showSettings = false
 
     var body: some View {
         ScrollView(showsIndicators: false) {
@@ -20,6 +21,15 @@ struct MainDashboardView: View {
                             .foregroundColor(.glowDark.opacity(0.75))
                     }
                     Spacer()
+                    Button {
+                        showSettings = true
+                    } label: {
+                        Image(systemName: "gearshape.fill")
+                            .font(.system(size: 16))
+                            .foregroundColor(.glowDark.opacity(0.75))
+                            .frame(width: 36, height: 36)
+                            .background(Circle().fill(Color.glowDark.opacity(0.10)))
+                    }
                 }
                 .padding(.horizontal, 28)
                 .padding(.top, 60)
@@ -149,6 +159,9 @@ struct MainDashboardView: View {
 
                 Spacer().frame(height: 120)
             }
+        }
+        .sheet(isPresented: $showSettings) {
+            SettingsView(vm: vm)
         }
     }
 }

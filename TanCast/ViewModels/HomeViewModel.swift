@@ -44,6 +44,26 @@ final class HomeViewModel: ObservableObject {
         UserDefaults.standard.bool(forKey: "hasPhotosensitivity")
     }
 
+    // skinType/tanGoal/hasPhotosensitivity are computed straight from UserDefaults
+    // rather than @Published, since they're normally set once during onboarding —
+    // these setters exist for the Settings screen, which lets users revise them
+    // afterward. objectWillChange.send() is needed manually since SwiftUI can't
+    // observe UserDefaults writes on its own.
+    func updateSkinType(_ type: FitzpatrickType) {
+        objectWillChange.send()
+        UserDefaults.standard.set(type.rawValue, forKey: "skinType")
+    }
+
+    func updateTanGoal(_ goal: TanGoal) {
+        objectWillChange.send()
+        UserDefaults.standard.set(goal.rawValue, forKey: "tanGoal")
+    }
+
+    func updateHasPhotosensitivity(_ value: Bool) {
+        objectWillChange.send()
+        UserDefaults.standard.set(value, forKey: "hasPhotosensitivity")
+    }
+
     var safeMinutes: Int {
         let base = skinType.safeExposureMinutes(uvIndex: currentUV)
         guard base > 0 else { return 0 }
