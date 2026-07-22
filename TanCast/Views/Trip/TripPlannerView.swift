@@ -94,10 +94,10 @@ struct TripInputView: View {
                                     VStack(alignment: .leading, spacing: 2) {
                                         Text(location.name)
                                             .font(.system(size: 15, weight: .semibold))
-                                            .foregroundColor(.glowDarkText)
+                                            .foregroundColor(.white.opacity(0.95))
                                         Text("\(location.admin1.map { "\($0), " } ?? "")\(location.country)")
                                             .font(.system(size: 12))
-                                            .foregroundColor(.glowDarkText.opacity(0.5))
+                                            .foregroundColor(.white.opacity(0.6))
                                     }
                                     Spacer()
                                 }
@@ -105,7 +105,7 @@ struct TripInputView: View {
                                 .padding(.vertical, 12)
                             }
                             if location.id != vm.searchResults.last?.id {
-                                Divider().background(Color.glowDarkText.opacity(0.08))
+                                Divider().background(Color.white.opacity(0.1))
                             }
                         }
                     }
