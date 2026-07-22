@@ -16,8 +16,8 @@ struct MainDashboardView: View {
                             .font(.system(size: 14, weight: .medium))
                             .foregroundColor(.glowDarkText.opacity(0.75))
                         Text(Date(), format: .dateTime.weekday(.wide).month().day())
-                            .font(.system(size: 13))
-                            .foregroundColor(.glowDarkText.opacity(0.6))
+                            .font(.system(size: 13, weight: .semibold))
+                            .foregroundColor(.glowDark.opacity(0.75))
                     }
                     Spacer()
                 }
@@ -41,8 +41,8 @@ struct MainDashboardView: View {
                             .font(.system(size: 88, weight: .black, design: .rounded))
                             .foregroundColor(.glowDarkText)
                         Text("UV Index")
-                            .font(.system(size: 14, weight: .medium))
-                            .foregroundColor(.glowDarkText.opacity(0.6))
+                            .font(.system(size: 14, weight: .semibold))
+                            .foregroundColor(.glowDark.opacity(0.75))
                         UVBadge(uvIndex: vm.currentUV)
                     }
                 }
@@ -174,12 +174,12 @@ struct PhotosensitivityProtectionCard: View {
                 .foregroundColor(.glowAmber.opacity(0.9))
 
             Text("Because of your sun allergy/photosensitivity, we don't show tanning windows or exposure timers — there's no reliable \"safe minutes\" number for this condition.")
-                .font(.system(size: 13))
-                .foregroundColor(.glowDarkText.opacity(0.7))
+                .font(.system(size: 13, weight: .medium))
+                .foregroundColor(.glowDark.opacity(0.8))
 
             Text("Seek shade, wear protective clothing, and use high SPF. Talk to your dermatologist about what's safe for you.")
-                .font(.system(size: 13))
-                .foregroundColor(.glowDarkText.opacity(0.7))
+                .font(.system(size: 13, weight: .medium))
+                .foregroundColor(.glowDark.opacity(0.8))
         }
         .padding(20)
         .background(
@@ -210,8 +210,8 @@ struct TanningWindowCard: View {
                             .font(.system(size: 22, weight: .black))
                             .foregroundColor(.glowDarkText)
                         Text("Lowest burn risk for \(skinType.displayName) skin")
-                            .font(.system(size: 13))
-                            .foregroundColor(.glowDarkText.opacity(0.6))
+                            .font(.system(size: 13, weight: .medium))
+                            .foregroundColor(.glowDark.opacity(0.75))
                     }
                     Spacer()
                     Image(systemName: "sparkles")
@@ -236,10 +236,10 @@ struct TanningWindowCard: View {
             } else {
                 HStack {
                     Image(systemName: "cloud.fill")
-                        .foregroundColor(.glowDarkText.opacity(0.6))
+                        .foregroundColor(.glowDark.opacity(0.7))
                     Text("No low-risk exposure window today")
-                        .font(.system(size: 15))
-                        .foregroundColor(.glowDarkText.opacity(0.65))
+                        .font(.system(size: 15, weight: .medium))
+                        .foregroundColor(.glowDark.opacity(0.8))
                 }
                 .padding(20)
                 .frame(maxWidth: .infinity, alignment: .leading)
@@ -274,8 +274,8 @@ struct StatCard: View {
                     .font(.system(size: 14))
                     .foregroundColor(color)
                 Text(title)
-                    .font(.system(size: 12, weight: .medium))
-                    .foregroundColor(.glowDarkText.opacity(0.75))
+                    .font(.system(size: 12, weight: .bold))
+                    .foregroundColor(.glowDark.opacity(0.85))
             }
             Text(value)
                 .font(.system(size: 20, weight: .black))
@@ -285,7 +285,7 @@ struct StatCard: View {
         .frame(maxWidth: .infinity, alignment: .leading)
         .background(
             RoundedRectangle(cornerRadius: 16)
-                .fill(Color.glowDarkText.opacity(0.07))
+                .fill(Color.glowDark.opacity(0.10))
         )
     }
 }
@@ -305,7 +305,7 @@ struct ConditionsRow: View {
         .padding(.vertical, 14)
         .background(
             RoundedRectangle(cornerRadius: 16)
-                .fill(Color.glowDarkText.opacity(0.06))
+                .fill(Color.glowDark.opacity(0.10))
         )
     }
 
@@ -330,8 +330,8 @@ struct ConditionItem: View {
                 .font(.system(size: 15, weight: .bold))
                 .foregroundColor(.glowDarkText)
             Text(label)
-                .font(.system(size: 11))
-                .foregroundColor(.glowDarkText.opacity(0.65))
+                .font(.system(size: 11, weight: .bold))
+                .foregroundColor(.glowDark.opacity(0.85))
         }
         .frame(maxWidth: .infinity)
     }
@@ -416,8 +416,8 @@ struct SunExposureScoreCard: View {
             VStack(alignment: .leading, spacing: 4) {
                 HStack(spacing: 8) {
                     Text("Exposure Score")
-                        .font(.system(size: 12, weight: .medium))
-                        .foregroundColor(.glowDarkText.opacity(0.75))
+                        .font(.system(size: 12, weight: .bold))
+                        .foregroundColor(.glowDark.opacity(0.85))
                     Text(level.rawValue)
                         .font(.system(size: 13, weight: .bold))
                         .foregroundColor(level.color)
@@ -427,8 +427,8 @@ struct SunExposureScoreCard: View {
                         .cornerRadius(6)
                 }
                 Text(level.advice)
-                    .font(.system(size: 13))
-                    .foregroundColor(.glowDarkText.opacity(0.7))
+                    .font(.system(size: 13, weight: .medium))
+                    .foregroundColor(.glowDark.opacity(0.8))
                     .lineLimit(2)
             }
         }
@@ -436,7 +436,7 @@ struct SunExposureScoreCard: View {
         .frame(maxWidth: .infinity, alignment: .leading)
         .background(
             RoundedRectangle(cornerRadius: 16)
-                .fill(Color.glowDarkText.opacity(0.06))
+                .fill(Color.glowDark.opacity(0.10))
                 .overlay(
                     RoundedRectangle(cornerRadius: 16)
                         .stroke(level.color.opacity(0.3), lineWidth: 1)
@@ -467,8 +467,8 @@ struct SmartAlertsCard: View {
                 Text(isPremium
                      ? "Daily forecast alert active · 8:00 AM"
                      : "Unlock personalized forecast & burn alerts")
-                    .font(.system(size: 12))
-                    .foregroundColor(.glowDarkText.opacity(0.7))
+                    .font(.system(size: 12, weight: .medium))
+                    .foregroundColor(.glowDark.opacity(0.8))
             }
 
             Spacer()
@@ -490,7 +490,7 @@ struct SmartAlertsCard: View {
         .padding(16)
         .background(
             RoundedRectangle(cornerRadius: 16)
-                .fill(Color.glowDarkText.opacity(0.06))
+                .fill(Color.glowDark.opacity(0.10))
         )
         .onTapGesture {
             if !isPremium { onUpgrade() }
@@ -507,25 +507,25 @@ struct LockedStatCard: View {
             HStack {
                 Image(systemName: icon)
                     .font(.system(size: 14))
-                    .foregroundColor(.glowDarkText.opacity(0.45))
+                    .foregroundColor(.glowDark.opacity(0.6))
                 Text(title)
-                    .font(.system(size: 12, weight: .medium))
-                    .foregroundColor(.glowDarkText.opacity(0.5))
+                    .font(.system(size: 12, weight: .bold))
+                    .foregroundColor(.glowDark.opacity(0.65))
             }
             HStack(spacing: 6) {
                 Image(systemName: "lock.fill")
                     .font(.system(size: 14))
-                    .foregroundColor(.glowGold.opacity(0.7))
+                    .foregroundColor(.glowGold.opacity(0.85))
                 Text("Premium")
                     .font(.system(size: 16, weight: .black))
-                    .foregroundColor(.glowGold.opacity(0.7))
+                    .foregroundColor(.glowGold.opacity(0.85))
             }
         }
         .padding(16)
         .frame(maxWidth: .infinity, alignment: .leading)
         .background(
             RoundedRectangle(cornerRadius: 16)
-                .fill(Color.glowDarkText.opacity(0.04))
+                .fill(Color.glowDark.opacity(0.08))
                 .overlay(
                     RoundedRectangle(cornerRadius: 16)
                         .stroke(Color.glowGold.opacity(0.2), lineWidth: 1)
