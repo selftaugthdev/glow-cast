@@ -79,7 +79,8 @@ final class TripUVService {
                 maxUV: info.maxUV,
                 sunrise: info.sunrise,
                 sunset: info.sunset,
-                hourly: hourly.sorted { $0.time < $1.time }
+                hourly: hourly.sorted { $0.time < $1.time },
+                timeZone: locationTimeZone
             )
         }.sorted { $0.date < $1.date }
     }

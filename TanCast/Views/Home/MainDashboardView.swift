@@ -267,7 +267,10 @@ struct TanningWindowCard: View {
     private func timeRange(_ start: Date, _ end: Date) -> String {
         let fmt = DateFormatter()
         fmt.dateFormat = "h a"
-        if Calendar.current.isDate(start, equalTo: end, toGranularity: .hour) {
+        fmt.timeZone = forecast?.timeZone ?? .current
+        var cal = Calendar.current
+        cal.timeZone = forecast?.timeZone ?? .current
+        if cal.isDate(start, equalTo: end, toGranularity: .hour) {
             return "Around \(fmt.string(from: start))"
         }
         return "\(fmt.string(from: start)) – \(fmt.string(from: end))"
@@ -325,6 +328,7 @@ struct ConditionsRow: View {
     private func timeString(_ date: Date) -> String {
         let fmt = DateFormatter()
         fmt.dateFormat = "h:mm a"
+        fmt.timeZone = forecast.timeZone
         return fmt.string(from: date)
     }
 }

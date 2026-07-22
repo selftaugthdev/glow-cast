@@ -23,6 +23,11 @@ struct DailyForecast: Identifiable {
     let sunrise: Date
     let sunset: Date
     let hourly: [HourlyUVEntry]
+    // The forecast location's timezone — every Date above is a correct absolute
+    // instant, but displaying it as a wall-clock string (e.g. "7:14 PM") needs
+    // this timezone, not the device's own, or the displayed hour will be wrong
+    // whenever the device isn't in the same timezone as the forecast location.
+    var timeZone: TimeZone = .current
 
     // Longest contiguous run of qualifying hours — a sunny morning and a sunny
     // late afternoon with clouds in between must not merge into one giant window.

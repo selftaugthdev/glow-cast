@@ -315,11 +315,12 @@ struct TripDayCard: View {
         return f
     }()
 
-    private let timeFormatter: DateFormatter = {
+    private var timeFormatter: DateFormatter {
         let f = DateFormatter()
         f.dateFormat = "h a"
+        f.timeZone = day.timeZone
         return f
-    }()
+    }
 
     var body: some View {
         HStack(spacing: 16) {

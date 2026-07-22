@@ -152,6 +152,7 @@ struct DayForecastRow: View {
     private func shortTimeRange(_ start: Date, _ end: Date) -> String {
         let fmt = DateFormatter()
         fmt.dateFormat = "ha"
+        fmt.timeZone = day.timeZone
         return "\(fmt.string(from: start))–\(fmt.string(from: end))"
     }
 }

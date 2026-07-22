@@ -24,6 +24,7 @@ final class NotificationService {
             if let window = tomorrow.tanningWindow {
                 let fmt = DateFormatter()
                 fmt.dateFormat = "h a"
+                fmt.timeZone = tomorrow.timeZone
                 body = "Today's exposure window: \(fmt.string(from: window.start))–\(fmt.string(from: window.end)) (UV \(Int(tomorrow.maxUV))) ☀️ Don't forget SPF"
             }
         }
