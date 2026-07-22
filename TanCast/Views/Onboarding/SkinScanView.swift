@@ -3,6 +3,7 @@ import AVFoundation
 
 struct SkinScanView: View {
     let onCapture: (UIImage) -> Void
+    let onSkip: () -> Void
     @State private var showCamera = false
     @State private var capturedImage: UIImage?
     @State private var isAnalyzing = false
@@ -102,14 +103,22 @@ struct SkinScanView: View {
                     }
                     .padding(.bottom, 60)
                 } else {
-                    Button(action: { showCamera = true }) {
-                        Label("Estimate My Skin Type", systemImage: "camera.fill")
-                            .font(.system(size: 18, weight: .bold))
-                            .foregroundColor(.glowDark)
-                            .frame(maxWidth: .infinity)
-                            .padding(.vertical, 18)
-                            .background(Color.glowGold)
-                            .cornerRadius(16)
+                    VStack(spacing: 12) {
+                        Button(action: { showCamera = true }) {
+                            Label("Estimate My Skin Type", systemImage: "camera.fill")
+                                .font(.system(size: 18, weight: .bold))
+                                .foregroundColor(.glowDark)
+                                .frame(maxWidth: .infinity)
+                                .padding(.vertical, 18)
+                                .background(Color.glowGold)
+                                .cornerRadius(16)
+                        }
+
+                        Button(action: onSkip) {
+                            Text("Skip for now")
+                                .font(.system(size: 15))
+                                .foregroundColor(.white.opacity(0.4))
+                        }
                     }
                     .padding(.horizontal, 32)
                     .padding(.bottom, 60)

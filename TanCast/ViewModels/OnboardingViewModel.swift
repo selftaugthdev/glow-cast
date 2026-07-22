@@ -52,6 +52,11 @@ final class OnboardingViewModel: ObservableObject {
         advance()
     }
 
+    func skipSkinScan() {
+        scanError = "Skipped"
+        advance()
+    }
+
     func requestNotifications() async {
         notificationsGranted = await NotificationService.shared.requestPermission()
         advance()

@@ -15,9 +15,12 @@ struct OnboardingView: View {
                     ))
 
             case .skinScan:
-                SkinScanView { image in
-                    Task { await vm.analyzeSkin(image: image) }
-                }
+                SkinScanView(
+                    onCapture: { image in
+                        Task { await vm.analyzeSkin(image: image) }
+                    },
+                    onSkip: { vm.skipSkinScan() }
+                )
                 .transition(.asymmetric(
                     insertion: .move(edge: .trailing),
                     removal: .move(edge: .leading)
