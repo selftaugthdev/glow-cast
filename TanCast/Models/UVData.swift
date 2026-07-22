@@ -96,6 +96,7 @@ enum UVCategory {
 }
 
 struct OpenMeteoResponse: Decodable {
+    let utc_offset_seconds: Int
     let hourly: HourlyData
     let daily: DailyData
 

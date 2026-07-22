@@ -37,22 +37,38 @@ final class UVService: ObservableObject {
         isLoading = false
     }
 
+    // Finds the hourly entry closest to "now" in absolute time, rather than
+    // comparing calendar-hour components — the latter is device-timezone-
+    // dependent and silently wrong whenever the device isn't in the same
+    // timezone as the forecast location (e.g. simulating a location on the
+    // other side of the world from the device's real system timezone).
     private func currentUVIndex(from forecast: DailyForecast?) -> Double {
-        guard let forecast else { return 0 }
+        guard let forecast, !forecast.hourly.isEmpty else { return 0 }
         let now = Date()
-        let cal = Calendar.current
-        let currentHour = cal.component(.hour, from: now)
-        return forecast.hourly.first { cal.component(.hour, from: $0.time) == currentHour }?.uvIndex ?? 0
+        let closest = forecast.hourly.min {
+            abs($0.time.timeIntervalSince(now)) < abs($1.time.timeIntervalSince(now))
+        }
+        return closest?.uvIndex ?? 0
     }
 
     private func parse(response: OpenMeteoResponse) -> [DailyForecast] {
+        // Open-Meteo returns wall-clock times local to the *requested
+        // coordinates* (via timezone=auto), not the device's own timezone —
+        // parsing them without this offset silently misinterprets every
+        // timestamp whenever the device and the forecast location differ.
+        let locationTimeZone = TimeZone(secondsFromGMT: response.utc_offset_seconds) ?? .current
+        var locationCalendar = Calendar(identifier: .gregorian)
+        locationCalendar.timeZone = locationTimeZone
+
         let isoDateTime = DateFormatter()
         isoDateTime.dateFormat = "yyyy-MM-dd'T'HH:mm"
         isoDateTime.locale = Locale(identifier: "en_US_POSIX")
+        isoDateTime.timeZone = locationTimeZone
 
         let isoDate = DateFormatter()
         isoDate.dateFormat = "yyyy-MM-dd"
         isoDate.locale = Locale(identifier: "en_US_POSIX")
+        isoDate.timeZone = locationTimeZone
 
         var dailyMap: [String: (maxUV: Double, sunrise: Date, sunset: Date)] = [:]
         for (i, dateStr) in response.daily.time.enumerated() {
@@ -73,7 +89,7 @@ final class UVService: ObservableObject {
             else { continue }
             let key = isoDate.string(from: date)
             let entry = HourlyUVEntry(
-                hour: Calendar.current.component(.hour, from: date),
+                hour: locationCalendar.component(.hour, from: date),
                 time: date,
                 uvIndex: response.hourly.uv_index[i],
                 cloudCover: response.hourly.cloud_cover[i]

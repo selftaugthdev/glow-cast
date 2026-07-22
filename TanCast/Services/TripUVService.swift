@@ -3,6 +3,9 @@ import Foundation
 final class TripUVService {
     private let session = URLSession.shared
 
+    // Timezone is set per-response in parse(response:), once we know the
+    // destination's actual UTC offset — Open-Meteo returns wall-clock times
+    // local to the requested coordinates, not the device's own timezone.
     private let isoDateTime: DateFormatter = {
         let f = DateFormatter()
         f.dateFormat = "yyyy-MM-dd'T'HH:mm"
@@ -18,6 +21,7 @@ final class TripUVService {
     }()
 
     func fetch(latitude: Double, longitude: Double, startDate: Date, endDate: Date) async throws -> [DailyForecast] {
+        isoDate.timeZone = .current
         let start = isoDate.string(from: startDate)
         let end = isoDate.string(from: endDate)
         let urlString = "https://api.open-meteo.com/v1/forecast"
@@ -34,6 +38,12 @@ final class TripUVService {
     }
 
     private func parse(response: OpenMeteoResponse) -> [DailyForecast] {
+        let locationTimeZone = TimeZone(secondsFromGMT: response.utc_offset_seconds) ?? .current
+        var locationCalendar = Calendar(identifier: .gregorian)
+        locationCalendar.timeZone = locationTimeZone
+        isoDateTime.timeZone = locationTimeZone
+        isoDate.timeZone = locationTimeZone
+
         var dailyMap: [String: (maxUV: Double, sunrise: Date, sunset: Date)] = [:]
         for (i, dateStr) in response.daily.time.enumerated() {
             guard i < response.daily.uv_index_max.count,
@@ -53,7 +63,7 @@ final class TripUVService {
             else { continue }
             let key = isoDate.string(from: date)
             let entry = HourlyUVEntry(
-                hour: Calendar.current.component(.hour, from: date),
+                hour: locationCalendar.component(.hour, from: date),
                 time: date,
                 uvIndex: response.hourly.uv_index[i],
                 cloudCover: response.hourly.cloud_cover[i]
